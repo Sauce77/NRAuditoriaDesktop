@@ -1,0 +1,1 @@
+En esta branch, procura que solo esten versiones de prueba de la aplicación. Para cualquier cambio, realiza otra branch especifica para resolver dicho problema.

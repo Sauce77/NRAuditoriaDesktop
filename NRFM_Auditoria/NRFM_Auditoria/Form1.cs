@@ -106,6 +106,10 @@ namespace NRFM_Auditoria
                         }//fin if no encuentra la columna Responsable
 
                         Debug.WriteLine(hoja.Name + " " + colResponsable);
+
+                        int index = Fin_Cabecera + 1; // a partir de esta fila son todos los datos
+
+
                     }// fin else se encuentra la cabecera
                 }// fin for each para recorrer hojas
 

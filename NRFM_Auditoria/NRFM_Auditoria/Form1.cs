@@ -80,6 +80,7 @@ namespace NRFM_Auditoria
         }
         private void cargarArchivo_Click(object sender, EventArgs e)
         {
+
             string ruta_archivo = obtenerArchivoSeleccionado();
 
             if(ruta_archivo != null)

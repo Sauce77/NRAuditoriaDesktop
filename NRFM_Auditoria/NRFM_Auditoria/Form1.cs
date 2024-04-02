@@ -104,6 +104,20 @@ namespace NRFM_Auditoria
             }// fin for recorre las hojas del archivo nuevo
             return false;
         }
+
+        public int encontrarFinDatos(IXLWorksheet hoja,int FinCabecera)
+        {
+            /*
+                Retorna el numero de la fila donde terminan los datos.
+            */
+
+            int index = FinCabecera;
+            while(!hoja.Cell("A" + index.ToString()).IsEmpty())
+            {
+                index++;
+            }
+            return index;
+        }
         private void cargarArchivo_Click(object sender, EventArgs e)
         {
             // obtenemos la anio y mes del sistema
@@ -166,13 +180,24 @@ namespace NRFM_Auditoria
                                 xl_responsable[nombre_responsable].Worksheets.Add(hoja.Name);
                             }// fin if no existe la hoja de la aplicacion actual
 
-         
-                            // queda utilizar la funcion para encontrar el fin de columnas y copiar las nuevas celdas
-                            xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(colResponsable)
+                            // lo utilizamos para iterar los campos de una fila
+                            char colActual = 'A';
+                            // obtenemos el fin de los datos de la hoja del responsable
+                            int finDatos = encontrarFinDatos(xl_responsable[nombre_responsable].Worksheet(hoja.Name), Fin_Cabecera);
+                            while (colActual <= colResponsable)
+                            {
+                                // obtenemps el valor de la celda en el archivo de certificacion 
+                                string valor = hoja.Cell(colActual + index.ToString()).Value.ToString();
+  
+                                //colocamos el valor al final de los datos
+                                xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(colActual + finDatos.ToString()).Value = valor;
+                                colActual++;
+                            }// fin while recorre una fila
+                            
 
                             index++;// pasa a la siguiente fila
                         }// fin mientras no llegue a celda 'A' vacia
-
+                        listaProceso.Items.Add(hoja.Name + " - Lista.");
                     }// fin else se encuentra la cabecera
                 }// fin for each para recorrer hojas
 

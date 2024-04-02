@@ -30,6 +30,7 @@
         {
             menuStrip1 = new MenuStrip();
             cargarArchivo = new Button();
+            listaProceso = new ListBox();
             SuspendLayout();
             // 
             // menuStrip1
@@ -51,11 +52,20 @@
             cargarArchivo.UseVisualStyleBackColor = true;
             cargarArchivo.Click += cargarArchivo_Click;
             // 
+            // listaProceso
+            // 
+            listaProceso.FormattingEnabled = true;
+            listaProceso.Location = new Point(50, 108);
+            listaProceso.Name = "listaProceso";
+            listaProceso.Size = new Size(670, 284);
+            listaProceso.TabIndex = 2;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(listaProceso);
             Controls.Add(cargarArchivo);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
@@ -69,5 +79,6 @@
 
         private MenuStrip menuStrip1;
         private Button cargarArchivo;
+        private ListBox listaProceso;
     }
 }

@@ -118,6 +118,18 @@ namespace NRFM_Auditoria
             }
             return index;
         }
+
+        public string estandarizarNombre(string nombre)
+        {
+            /*
+                Elimina los espacios de mas en el nombre del responsable. Separa los nombres por espacio
+                y los reagrupa en una nueva cadena.
+            */
+            string[] Nombres = nombre.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+            string resultado = string.Join(" ", Nombres);
+            return resultado.ToUpper();
+        }
         private void cargarArchivo_Click(object sender, EventArgs e)
         {
             // obtenemos la anio y mes del sistema
@@ -144,6 +156,9 @@ namespace NRFM_Auditoria
                 // declaramos un diccionario para guardar los libros de cada responsable
                 Dictionary<string,XLWorkbook> xl_responsable = new Dictionary<string, XLWorkbook>();
 
+                // limpiamos la lista de los procesos terminados
+                listaProceso.Items.Clear();
+
                 foreach (IXLWorksheet hoja in archivo.Worksheets)
                 {
                     int Fin_Cabecera = encontrarCabecera(hoja);
@@ -169,6 +184,7 @@ namespace NRFM_Auditoria
                         while(!hoja.Cell("A" + index.ToString()).IsEmpty())
                         {
                             string nombre_responsable = hoja.Cell(colResponsable + index.ToString()).Value.ToString();
+                            nombre_responsable = estandarizarNombre(nombre_responsable);
 
                             if (!xl_responsable.ContainsKey(nombre_responsable))
                             {
@@ -217,6 +233,6 @@ namespace NRFM_Auditoria
                     MessageBox.Show("Proceso Terminado");
             }// fin if ruta de archivo seleccionada
 
-        }
+        }// fin cargar archivo
     }
 }

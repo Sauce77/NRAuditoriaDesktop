@@ -1,4 +1,5 @@
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Bibliography;
 using System.Diagnostics;
 
 namespace NRFM_Auditoria
@@ -130,6 +131,8 @@ namespace NRFM_Auditoria
             string resultado = string.Join(" ", Nombres);
             return resultado.ToUpper();
         }
+
+
         private void cargarArchivo_Click(object sender, EventArgs e)
         {
             // obtenemos la anio y mes del sistema
@@ -177,13 +180,12 @@ namespace NRFM_Auditoria
                             continue; // si no se encuentra la columna que pase a la siguiente hoja
                         }//fin if no encuentra la columna Responsable
 
-                        Debug.WriteLine(hoja.Name + " " + colResponsable);
-
                         // comenzamos a leer la informacion
                         int index = Fin_Cabecera + 1; // index sera quien recorra las filas del archivo
                         while(!hoja.Cell("A" + index.ToString()).IsEmpty())
                         {
                             string nombre_responsable = hoja.Cell(colResponsable + index.ToString()).Value.ToString();
+                            // se escribe el nombre del responsable en maysuculas y con un solo espacio para separar los nombres
                             nombre_responsable = estandarizarNombre(nombre_responsable);
 
                             if (!xl_responsable.ContainsKey(nombre_responsable))
@@ -194,10 +196,42 @@ namespace NRFM_Auditoria
                             if (!xl_responsable[nombre_responsable].Worksheets.Contains(hoja.Name))
                             {
                                 xl_responsable[nombre_responsable].Worksheets.Add(hoja.Name);
+                                /*
+                                    Genera el formato de cada cabecera de las hojas de excel 
+                                */
+
+                                string[] Textos = {
+                                    "NR Finance Mexico",
+                                    hoja.Name,
+                                    "Certificacion de usuarios " + sistema_year.ToString(),
+                                    "Reporte de usuarios"
+                                };
+
+                                int fila = 1; char columna = 'D';
+                                foreach (string texto in Textos)
+                                {
+                                    xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Value = texto;
+                                    // que este en negritas
+                                    xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.Bold = true;
+                                    // definir el tamano
+                                    xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.FontSize = 16;
+                                    // centrar el texto
+                                    xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                                    fila++;
+                                }// fin foreach escribir texto
+
+                                /*
+                                    Agregar el nombre de las columnas 
+                                */
+
                             }// fin if no existe la hoja de la aplicacion actual
 
                             // lo utilizamos para iterar los campos de una fila
                             char colActual = 'A';
+
+                            // revisa como vas a insertar los nombres de las columnas
+
                             // obtenemos el fin de los datos de la hoja del responsable
                             int finDatos = encontrarFinDatos(xl_responsable[nombre_responsable].Worksheet(hoja.Name), Fin_Cabecera);
                             while (colActual <= colResponsable)
@@ -207,12 +241,18 @@ namespace NRFM_Auditoria
   
                                 //colocamos el valor al final de los datos
                                 xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(colActual + finDatos.ToString()).Value = valor;
+
+                                // agregamos bordes a la celda
+                                xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(colActual + finDatos.ToString()).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+
                                 colActual++;
+                                
                             }// fin while recorre una fila
                             
 
                             index++;// pasa a la siguiente fila
                         }// fin mientras no llegue a celda 'A' vacia
+
                         listaProceso.Items.Add(hoja.Name + " - Lista.");
                     }// fin else se encuentra la cabecera
                 }// fin for each para recorrer hojas
@@ -227,6 +267,12 @@ namespace NRFM_Auditoria
                 // comenzar a guardar los excel de responsables en la ruta carpeta
                 foreach (KeyValuePair<string, XLWorkbook>responsable in xl_responsable)
                 {
+                    // ajustamos las columnas al texto en cada hoja
+                    foreach(IXLWorksheet aplicativo in responsable.Value.Worksheets)
+                    {
+                        aplicativo.Columns().AdjustToContents();
+                    }// fin foreach ajustar columnas
+
                     responsable.Value.SaveAs(carpeta_mensual + "/" + responsable.Key + ".xlsx");
                 }// fin for guardar archivos responsable
 

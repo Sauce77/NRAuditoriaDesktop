@@ -59,7 +59,7 @@ namespace NRFM_Auditoria
             return index;
         }
 
-        public char encontrarColResponsable(IXLWorksheet hoja,int filaEncabezado)
+        public char encontrarColResponsable(IXLWorksheet hoja, int filaEncabezado)
         {
             /*
                 Inidcado la fila donde supuestamente se encuentra el encabezado de los datos (los titulos), recorre las columnas
@@ -81,7 +81,7 @@ namespace NRFM_Auditoria
             return '-';
         }
 
-        public int finColumnasArchivo(IXLWorksheet hoja,int filaEncabezado)
+        public int finColumnasArchivo(IXLWorksheet hoja, int filaEncabezado)
         {
             /*
                 Retorna el numero de columnas que tiene el archivo 
@@ -106,14 +106,14 @@ namespace NRFM_Auditoria
             return false;
         }
 
-        public int encontrarFinDatos(IXLWorksheet hoja,int FinCabecera)
+        public int encontrarFinDatos(IXLWorksheet hoja, int FinCabecera)
         {
             /*
                 Retorna el numero de la fila donde terminan los datos.
             */
 
             int index = FinCabecera;
-            while(!hoja.Cell("A" + index.ToString()).IsEmpty())
+            while (!hoja.Cell("A" + index.ToString()).IsEmpty())
             {
                 index++;
             }
@@ -151,13 +151,13 @@ namespace NRFM_Auditoria
             // se selcciona el archivo a leer
             string ruta_archivo = obtenerArchivoSeleccionado();
 
-            if(ruta_archivo != null)
+            if (ruta_archivo != null)
             {
                 // cargamos el archivo seleccionado a un  objeto de closedXML
                 var archivo = new XLWorkbook(ruta_archivo);
 
                 // declaramos un diccionario para guardar los libros de cada responsable
-                Dictionary<string,XLWorkbook> xl_responsable = new Dictionary<string, XLWorkbook>();
+                Dictionary<string, XLWorkbook> xl_responsable = new Dictionary<string, XLWorkbook>();
 
                 // limpiamos la lista de los procesos terminados
                 listaProceso.Items.Clear();
@@ -165,7 +165,7 @@ namespace NRFM_Auditoria
                 foreach (IXLWorksheet hoja in archivo.Worksheets)
                 {
                     int Fin_Cabecera = encontrarCabecera(hoja);
-                    if(Fin_Cabecera == -1)
+                    if (Fin_Cabecera == -1)
                     {
                         MessageBox.Show("No se ha encontrado la cabecera en " + hoja.Name);
                         continue; // si no se encontro cabecera que pase a la siguiente hoja
@@ -174,7 +174,7 @@ namespace NRFM_Auditoria
                     {
                         // buscamos la columna de responsable
                         char colResponsable = encontrarColResponsable(hoja, Fin_Cabecera);
-                        if(colResponsable == '-')
+                        if (colResponsable == '-')
                         {
                             MessageBox.Show("No se ha encontrado la columna " + NOMBRE_COL_RESPONSABLE + " en " + hoja.Name);
                             continue; // si no se encuentra la columna que pase a la siguiente hoja
@@ -182,7 +182,7 @@ namespace NRFM_Auditoria
 
                         // comenzamos a leer la informacion
                         int index = Fin_Cabecera + 1; // index sera quien recorra las filas del archivo
-                        while(!hoja.Cell("A" + index.ToString()).IsEmpty())
+                        while (!hoja.Cell("A" + index.ToString()).IsEmpty())
                         {
                             string nombre_responsable = hoja.Cell(colResponsable + index.ToString()).Value.ToString();
                             // se escribe el nombre del responsable en maysuculas y con un solo espacio para separar los nombres
@@ -225,7 +225,7 @@ namespace NRFM_Auditoria
                                     Agregar el nombre de las columnas 
                                 */
                                 columna = 'A';
-                                while(!hoja.Cell(columna + Fin_Cabecera.ToString()).IsEmpty())
+                                while (!hoja.Cell(columna + Fin_Cabecera.ToString()).IsEmpty())
                                 {
                                     // obtenemos el nombre de la columna del documento original
                                     string nombre_col = hoja.Cell(columna + Fin_Cabecera.ToString()).Value.ToString();
@@ -239,7 +239,7 @@ namespace NRFM_Auditoria
                                     xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.FontColor = XLColor.White;
                                     // en negritas
                                     xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.Bold = true;
-                                    
+
                                     columna++;
                                 }//fin while fin cabecera no este vacio
                                 // agregamos los filtros de las columnas
@@ -265,9 +265,9 @@ namespace NRFM_Auditoria
                                 xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(colActual + finDatos.ToString()).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
                                 colActual++;
-                                
+
                             }// fin while recorre una fila
-                            
+
 
                             index++;// pasa a la siguiente fila
                         }// fin mientras no llegue a celda 'A' vacia
@@ -278,16 +278,16 @@ namespace NRFM_Auditoria
 
                 // creamos una carpeta especifica para este mes y anio
                 string carpeta_mensual = ruta_carpeta + "/" + sistema_month.ToString() + "-" + sistema_year.ToString();
-                if(!Directory.Exists(carpeta_mensual))
+                if (!Directory.Exists(carpeta_mensual))
                 {
                     Directory.CreateDirectory(carpeta_mensual);
                 }// si no existe la carpeta mensual
 
                 // comenzar a guardar los excel de responsables en la ruta carpeta
-                foreach (KeyValuePair<string, XLWorkbook>responsable in xl_responsable)
+                foreach (KeyValuePair<string, XLWorkbook> responsable in xl_responsable)
                 {
                     // ajustamos las columnas al texto en cada hoja
-                    foreach(IXLWorksheet aplicativo in responsable.Value.Worksheets)
+                    foreach (IXLWorksheet aplicativo in responsable.Value.Worksheets)
                     {
                         aplicativo.Columns().AdjustToContents();
                     }// fin foreach ajustar columnas
@@ -295,9 +295,21 @@ namespace NRFM_Auditoria
                     responsable.Value.SaveAs(carpeta_mensual + "/" + responsable.Key + ".xlsx");
                 }// fin for guardar archivos responsable
 
-                    MessageBox.Show("Proceso Terminado");
+                MessageBox.Show("Proceso Terminado");
             }// fin if ruta de archivo seleccionada
 
         }// fin cargar archivo
+
+        private void separarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void generarTotalesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form generar_totales = new Form2();
+            generar_totales.Show();
+            this.Close();
+        }
     }
 }

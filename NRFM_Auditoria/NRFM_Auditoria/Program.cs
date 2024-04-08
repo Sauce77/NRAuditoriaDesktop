@@ -11,7 +11,10 @@ namespace NRFM_Auditoria
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+
+            Form1 form1 = new Form1();
+            form1.Show();
+            Application.Run();
         }
     }
 }

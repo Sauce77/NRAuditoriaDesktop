@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NRFM_Auditoria")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2d4d8cc83b8a66db6f8a0e28789777b438f515ed")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+79e25e2b73f8de630500c163975855d48c258da5")]
 [assembly: System.Reflection.AssemblyProductAttribute("NRFM_Auditoria")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NRFM_Auditoria")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

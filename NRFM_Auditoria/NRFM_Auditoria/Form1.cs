@@ -224,23 +224,42 @@ namespace NRFM_Auditoria
                                 /*
                                     Agregar el nombre de las columnas 
                                 */
+                                columna = 'A';
+                                while(!hoja.Cell(columna + Fin_Cabecera.ToString()).IsEmpty())
+                                {
+                                    // obtenemos el nombre de la columna del documento original
+                                    string nombre_col = hoja.Cell(columna + Fin_Cabecera.ToString()).Value.ToString();
+                                    // se lo asignamos en la hoja actual
+                                    xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Value = nombre_col;
+                                    // damos formato a la casilla
+
+                                    // fondo de la celda negro
+                                    xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Fill.SetBackgroundColor(XLColor.FromTheme(XLThemeColor.Text1));
+                                    // fuente color blanco
+                                    xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.FontColor = XLColor.White;
+                                    // en negritas
+                                    xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.Bold = true;
+                                    
+                                    columna++;
+                                }//fin while fin cabecera no este vacio
+                                // agregamos los filtros de las columnas
+                                xl_responsable[nombre_responsable].Worksheet(hoja.Name).Range('A' + fila.ToString(), columna + fila.ToString()).SetAutoFilter(true);
 
                             }// fin if no existe la hoja de la aplicacion actual
 
                             // lo utilizamos para iterar los campos de una fila
                             char colActual = 'A';
 
-                            // revisa como vas a insertar los nombres de las columnas
-
+                            // buscamos la cabecera en la hoja actual 
+                            int Fin_Cabecera_HR = encontrarCabecera(xl_responsable[nombre_responsable].Worksheet(hoja.Name));
                             // obtenemos el fin de los datos de la hoja del responsable
-                            int finDatos = encontrarFinDatos(xl_responsable[nombre_responsable].Worksheet(hoja.Name), Fin_Cabecera);
-                            while (colActual <= colResponsable)
+                            int finDatos = encontrarFinDatos(xl_responsable[nombre_responsable].Worksheet(hoja.Name), Fin_Cabecera_HR);
+                            while (!hoja.Cell(colActual + Fin_Cabecera.ToString()).IsEmpty())
                             {
                                 // obtenemps el valor de la celda en el archivo de certificacion 
-                                string valor = hoja.Cell(colActual + index.ToString()).Value.ToString();
-  
+                                var celdaOrigen = hoja.Cell(colActual + index.ToString()).Value;
                                 //colocamos el valor al final de los datos
-                                xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(colActual + finDatos.ToString()).Value = valor;
+                                xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(colActual + finDatos.ToString()).Value = celdaOrigen;
 
                                 // agregamos bordes a la celda
                                 xl_responsable[nombre_responsable].Worksheet(hoja.Name).Cell(colActual + finDatos.ToString()).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;

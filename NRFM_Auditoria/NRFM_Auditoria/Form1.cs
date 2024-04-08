@@ -54,6 +54,7 @@ namespace NRFM_Auditoria
             //si no se encuentra la cabecera en el limite, se omite la hoja
             if (MAX_FILA_CABECERA <= index)
             {
+                MessageBox.Show("No se ha encontrado la cabecera en " + hoja.Name);
                 return -1;
             }// fin maximo de columnas cabecera
             return index;
@@ -167,7 +168,6 @@ namespace NRFM_Auditoria
                     int Fin_Cabecera = encontrarCabecera(hoja);
                     if (Fin_Cabecera == -1)
                     {
-                        MessageBox.Show("No se ha encontrado la cabecera en " + hoja.Name);
                         continue; // si no se encontro cabecera que pase a la siguiente hoja
                     }// fin if no se encuentra la cabecera 
                     else

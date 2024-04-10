@@ -82,7 +82,8 @@ namespace NRFM_Auditoria
             int anio = DateTime.Now.Year;
 
             string fileActual = obtenerArchivoSeleccionado();
-            if(fileActual != null){
+            if (fileActual != null)
+            {
                 // declaramos un excel para insertar los totales
                 var archivoNuevo = new XLWorkbook();
 
@@ -266,8 +267,8 @@ namespace NRFM_Auditoria
                     {
                         // guardar el nuevo archivo excel
                         archivoNuevo.SaveAs(sfd.FileName);
+                        MessageBox.Show("Archivo Guardado");
                     }// si la ruta es correcta
-                    MessageBox.Show("Archivo Guardado");
                 }// fin si tiene hojas
                 else
                 {
@@ -277,5 +278,10 @@ namespace NRFM_Auditoria
 
             }//fin archivo seleccionado
         }// fin cargar archivo
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+           
+        }
     }
 }

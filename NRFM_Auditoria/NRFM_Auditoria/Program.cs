@@ -13,8 +13,23 @@ namespace NRFM_Auditoria
             ApplicationConfiguration.Initialize();
 
             Form1 form1 = new Form1();
+            form1.FormClosed += MainForm_Closed;
             form1.Show();
             Application.Run();
+        }
+
+        private static void MainForm_Closed(object sender, FormClosedEventArgs e)
+        {
+            ((Form)sender).FormClosed -= MainForm_Closed;
+
+            if (Application.OpenForms.Count == 0)
+            {
+                Application.ExitThread();
+            }
+            else
+            {
+                Application.OpenForms[0].FormClosed += MainForm_Closed;
+            }
         }
     }
 }

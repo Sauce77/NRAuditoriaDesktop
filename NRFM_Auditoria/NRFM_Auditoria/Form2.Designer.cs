@@ -31,6 +31,7 @@
             menuStrip1 = new MenuStrip();
             separarResponsablesToolStripMenuItem = new ToolStripMenuItem();
             cargarArchivo = new Button();
+            label1 = new Label();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -53,19 +54,31 @@
             // 
             // cargarArchivo
             // 
-            cargarArchivo.Location = new Point(50, 50);
+            cargarArchivo.Location = new Point(51, 111);
             cargarArchivo.Name = "cargarArchivo";
-            cargarArchivo.Size = new Size(116, 42);
+            cargarArchivo.Size = new Size(170, 42);
             cargarArchivo.TabIndex = 1;
             cargarArchivo.Text = "Cargar Archivo";
             cargarArchivo.UseVisualStyleBackColor = true;
             cargarArchivo.Click += cargarArchivo_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(243, 41);
+            label1.Name = "label1";
+            label1.Size = new Size(252, 46);
+            label1.TabIndex = 2;
+            label1.Text = "Generar Totales";
+            label1.Click += label1_Click;
             // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label1);
             Controls.Add(cargarArchivo);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
@@ -83,5 +96,6 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem separarResponsablesToolStripMenuItem;
         private Button cargarArchivo;
+        private Label label1;
     }
 }

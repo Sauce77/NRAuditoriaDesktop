@@ -32,6 +32,7 @@
             generarTotalesToolStripMenuItem = new ToolStripMenuItem();
             cargarArchivo = new Button();
             listaProceso = new ListBox();
+            label1 = new Label();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -70,11 +71,22 @@
             listaProceso.Size = new Size(670, 284);
             listaProceso.TabIndex = 2;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(240, 28);
+            label1.Name = "label1";
+            label1.Size = new Size(307, 41);
+            label1.TabIndex = 3;
+            label1.Text = "Separar Responsables";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label1);
             Controls.Add(listaProceso);
             Controls.Add(cargarArchivo);
             Controls.Add(menuStrip1);
@@ -94,5 +106,6 @@
         private Button cargarArchivo;
         private ListBox listaProceso;
         private ToolStripMenuItem generarTotalesToolStripMenuItem;
+        private Label label1;
     }
 }

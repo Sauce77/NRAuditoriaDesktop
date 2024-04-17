@@ -63,7 +63,7 @@ namespace NRFM_Auditoria
         public char encontrarColResponsable(IXLWorksheet hoja, int filaEncabezado)
         {
             /*
-                Inidcado la fila donde supuestamente se encuentra el encabezado de los datos (los titulos), recorre las columnas
+                Indicando la fila donde supuestamente se encuentra el encabezado de los datos (los titulos), recorre las columnas
                 hasta encontrar la celda cuyo valor sea igual a NOMBRE_COL_RESPONSABLE, devolviendo la letra de dicha columna. En 
                 caso de no encontrarla retorna "-".
             */
@@ -85,7 +85,7 @@ namespace NRFM_Auditoria
         public int finColumnasArchivo(IXLWorksheet hoja, int filaEncabezado)
         {
             /*
-                Retorna el numero de columnas que tiene el archivo 
+                Retorna la columna final del encabezado de los datos en el archivo
             */
             char columna = 'A';
 

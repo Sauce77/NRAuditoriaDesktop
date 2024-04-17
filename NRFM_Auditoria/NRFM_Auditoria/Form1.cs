@@ -184,6 +184,12 @@ namespace NRFM_Auditoria
                         int index = Fin_Cabecera + 1; // index sera quien recorra las filas del archivo
                         while (!hoja.Cell("A" + index.ToString()).IsEmpty())
                         {
+                            // verificamos que la celda en cuestion no color
+                            while(hoja.Cell("A" + index.ToString()).Style.Fill.BackgroundColor != XLColor.FromIndex(64))
+                            {
+                                index++; // si la celda tiene color que la ignore
+                            }// fin si la celda tiene color
+
                             string nombre_responsable = hoja.Cell(colResponsable + index.ToString()).Value.ToString();
                             // se escribe el nombre del responsable en maysuculas y con un solo espacio para separar los nombres
                             nombre_responsable = estandarizarNombre(nombre_responsable);

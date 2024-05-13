@@ -14,6 +14,9 @@ namespace NRFM_Auditoria
     public partial class Form2 : Form
     {
         public const string NOMBRE_COL_RESPONSABLE = "Responsable";
+
+        public const string NOMBRE_COL_U_ACCESO = "Responsable";
+
         public string[] CAMPOS_RESPONSABLE = ["Total Usuarios", "Enviado Responsable", "Respuesta Responsable", "Baja Automatica", "Baja Responsable", "Conservar Acceso Responsable"];
 
         public const int FILAS_ENTRE_RESPONSABLES = 1;
@@ -63,6 +66,51 @@ namespace NRFM_Auditoria
             }// fin maximo de columnas cabecera
             return index;
         }
+
+        public char encontrarColResponsable(IXLWorksheet hoja, int filaEncabezado)
+        {
+            /*
+                Indicando la fila donde supuestamente se encuentra el encabezado de los datos (los titulos), recorre las columnas
+                hasta encontrar la celda cuyo valor sea igual a NOMBRE_COL_RESPONSABLE, devolviendo la letra de dicha columna. En 
+                caso de no encontrarla retorna "-".
+            */
+            // buscamos en donde se encuentra la columna de responsables
+            char colResponsable = 'A';
+
+            while (!hoja.Cell(colResponsable + filaEncabezado.ToString()).IsEmpty())
+            {
+                //Debug.WriteLine(hoja.Cell(colResponsable + index.ToString()).Value.ToString());
+                if (hoja.Cell(colResponsable + filaEncabezado.ToString()).Value.ToString() == NOMBRE_COL_RESPONSABLE)
+                {
+                    return colResponsable;
+                }//fin if celda con valor Responsable
+                colResponsable++;
+            }//fin while encontrar col responsable
+            return '-';
+        }
+
+        public char encontrarColUltimoAcceso(IXLWorksheet hoja, int filaEncabezado)
+        {
+            /*
+                Indicando la fila donde supuestamente se encuentra el encabezado de los datos (los titulos), recorre las columnas
+                hasta encontrar la celda cuyo valor sea igual a NOMBRE_COL_ULTIMO_ACCESO , devolviendo la letra de dicha columna. En 
+                caso de no encontrarla retorna "-".
+            */
+            // buscamos en donde se encuentra la columna de responsables
+            char colResponsable = 'A';
+
+            while (!hoja.Cell(colResponsable + filaEncabezado.ToString()).IsEmpty())
+            {
+                //Debug.WriteLine(hoja.Cell(colResponsable + index.ToString()).Value.ToString());
+                if (hoja.Cell(colResponsable + filaEncabezado.ToString()).Value.ToString() == NOMBRE_COL_U_ACCESO)
+                {
+                    return colResponsable;
+                }//fin if celda con valor Responsable
+                colResponsable++;
+            }//fin while encontrar col responsable
+            return '-';
+        }
+
         public Form2()
         {
             InitializeComponent();

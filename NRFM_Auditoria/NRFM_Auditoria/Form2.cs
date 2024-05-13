@@ -13,103 +13,9 @@ namespace NRFM_Auditoria
 {
     public partial class Form2 : Form
     {
-        public const string NOMBRE_COL_RESPONSABLE = "Responsable";
-
-        public const string NOMBRE_COL_U_ACCESO = "Responsable";
-
         public string[] CAMPOS_RESPONSABLE = ["Total Usuarios", "Enviado Responsable", "Respuesta Responsable", "Baja Automatica", "Baja Responsable", "Conservar Acceso Responsable"];
 
         public const int FILAS_ENTRE_RESPONSABLES = 1;
-
-        public const int MAX_FILA_CABECERA = 1000;
-
-        public const string FILTROS_ARCHIVOS_EXCEL = "Archivos Excel|*.xlsx;*.xlsm;*.csv;";
-
-        public string obtenerArchivoSeleccionado()
-        {
-            /*
-                Obtiene la ruta del archivo seleccionada en el explorador de archivos desplegado, si no se selecciona
-                un archivo retorna null
-            */
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = FILTROS_ARCHIVOS_EXCEL;
-
-
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                return ofd.FileName;
-            }// si el archivo esta ok
-
-            return null;
-        }
-
-        public int encontrarCabecera(IXLWorksheet hoja)
-        {
-            /*
-                Busca en el archivo la primera celda de color negro que se encuentre en la primera columna para determinar que 
-                es el fin de la cabecera, o en su defecto el encabezado de los datos. Si no encuentra una cabecera en el numero maximo
-                de filas, entonces regresa -1.
-            */
-            int index = 1;
-
-            // hay que buscar el fin de cabecera
-            while (!hoja.Cell("A" + index.ToString()).Style.Fill.BackgroundColor.Equals(XLColor.FromTheme(XLThemeColor.Text1)) && MAX_FILA_CABECERA > index)
-            {
-                index++;
-            }//fin while encontrar cabecera
-
-            //si no se encuentra la cabecera en el limite, se omite la hoja
-            if (MAX_FILA_CABECERA <= index)
-            {
-                MessageBox.Show("No se ha encontrado la cabecera en " + hoja.Name);
-                return -1;
-            }// fin maximo de columnas cabecera
-            return index;
-        }
-
-        public char encontrarColResponsable(IXLWorksheet hoja, int filaEncabezado)
-        {
-            /*
-                Indicando la fila donde supuestamente se encuentra el encabezado de los datos (los titulos), recorre las columnas
-                hasta encontrar la celda cuyo valor sea igual a NOMBRE_COL_RESPONSABLE, devolviendo la letra de dicha columna. En 
-                caso de no encontrarla retorna "-".
-            */
-            // buscamos en donde se encuentra la columna de responsables
-            char colResponsable = 'A';
-
-            while (!hoja.Cell(colResponsable + filaEncabezado.ToString()).IsEmpty())
-            {
-                //Debug.WriteLine(hoja.Cell(colResponsable + index.ToString()).Value.ToString());
-                if (hoja.Cell(colResponsable + filaEncabezado.ToString()).Value.ToString() == NOMBRE_COL_RESPONSABLE)
-                {
-                    return colResponsable;
-                }//fin if celda con valor Responsable
-                colResponsable++;
-            }//fin while encontrar col responsable
-            return '-';
-        }
-
-        public char encontrarColUltimoAcceso(IXLWorksheet hoja, int filaEncabezado)
-        {
-            /*
-                Indicando la fila donde supuestamente se encuentra el encabezado de los datos (los titulos), recorre las columnas
-                hasta encontrar la celda cuyo valor sea igual a NOMBRE_COL_ULTIMO_ACCESO , devolviendo la letra de dicha columna. En 
-                caso de no encontrarla retorna "-".
-            */
-            // buscamos en donde se encuentra la columna de responsables
-            char colResponsable = 'A';
-
-            while (!hoja.Cell(colResponsable + filaEncabezado.ToString()).IsEmpty())
-            {
-                //Debug.WriteLine(hoja.Cell(colResponsable + index.ToString()).Value.ToString());
-                if (hoja.Cell(colResponsable + filaEncabezado.ToString()).Value.ToString() == NOMBRE_COL_U_ACCESO)
-                {
-                    return colResponsable;
-                }//fin if celda con valor Responsable
-                colResponsable++;
-            }//fin while encontrar col responsable
-            return '-';
-        }
 
         public Form2()
         {
@@ -129,7 +35,7 @@ namespace NRFM_Auditoria
             int mes = DateTime.Now.Month;
             int anio = DateTime.Now.Year;
 
-            string fileActual = obtenerArchivoSeleccionado();
+            string fileActual = FuncionesAuditoria.obtenerArchivoSeleccionado();
             if (fileActual != null)
             {
                 // declaramos un excel para insertar los totales
@@ -141,7 +47,7 @@ namespace NRFM_Auditoria
                 //iteramos en cada hoja del libro de excel
                 foreach (IXLWorksheet hoja in libroActual.Worksheets)
                 {
-                    int index = encontrarCabecera(hoja);
+                    int index = FuncionesAuditoria.encontrarCabecera(hoja);
 
                     if (index < 0)
                     {
@@ -151,22 +57,14 @@ namespace NRFM_Auditoria
                     int FIN_CABECERA = index;
 
                     // buscamos en donde se encuentra la columna de responsables
-                    char colResponsable = 'A';
-                    while (!hoja.Cell(colResponsable + index.ToString()).IsEmpty())
-                    {
-                        //Debug.WriteLine(hoja.Cell(colResponsable + index.ToString()).Value.ToString());
-                        if (hoja.Cell(colResponsable + index.ToString()).Value.ToString() == NOMBRE_COL_RESPONSABLE)
-                        {
-                            break;
-                        }//fin if celda con valor Responsable
-                        colResponsable++;
-                    }//fin while encontrar col responsable
+                    char colResponsable = FuncionesAuditoria.encontrarColResponsable(hoja, FIN_CABECERA);
 
                     // en caso de no encontrar la columna de responsables, que pase a la siguiente hoja
-                    if (hoja.Cell(colResponsable + index.ToString()).IsEmpty())
-                    {
-                        continue;
-                    }//fin no hay columna responsable
+                    if(colResponsable == '-')
+                        {
+                        MessageBox.Show("No se ha encontrado la columna de responsable en " + hoja.Name);
+                        continue; // si no se encuentra la columna que pase a la siguiente hoja
+                    }//fin if no encuentra la columna Responsable
 
                     index++; // sumamos uno para que omita el nombre de las columnas
                     /*
@@ -213,7 +111,7 @@ namespace NRFM_Auditoria
                     // anadimos titulos a las columnas
 
                     // titulo Responsables
-                    hojaAplicacion.Cell("A" + (FIN_CABECERA - 1).ToString()).Value = NOMBRE_COL_RESPONSABLE;
+                    hojaAplicacion.Cell("A" + (FIN_CABECERA - 1).ToString()).Value = FuncionesAuditoria.NOMBRE_COL_RESPONSABLE;
 
                     // titulo mes pasado
                     hojaAplicacion.Cell("C" + (FIN_CABECERA - 1).ToString()).Value = ((mes - 1).ToString() + "-" + anio.ToString());
@@ -304,7 +202,7 @@ namespace NRFM_Auditoria
 
                     SaveFileDialog sfd = new SaveFileDialog();
                     sfd.Title = "Guardar archivo de totales";
-                    sfd.Filter = FILTROS_ARCHIVOS_EXCEL;
+                    sfd.Filter = FuncionesAuditoria.FILTROS_ARCHIVOS_EXCEL;
 
                     // formato del nombre del archivo
                     string nombre_nuevo_archivo = "Totales-" + mes.ToString() + "-" + anio.ToString() + ".xlsx";

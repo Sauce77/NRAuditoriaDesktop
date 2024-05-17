@@ -32,13 +32,14 @@
             separarResponsablesToolStripMenuItem = new ToolStripMenuItem();
             cargarArchivo = new Button();
             label1 = new Label();
+            marcarInactividadToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { separarResponsablesToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { separarResponsablesToolStripMenuItem, marcarInactividadToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 28);
@@ -73,6 +74,13 @@
             label1.Text = "Generar Totales";
             label1.Click += label1_Click;
             // 
+            // marcarInactividadToolStripMenuItem
+            // 
+            marcarInactividadToolStripMenuItem.Name = "marcarInactividadToolStripMenuItem";
+            marcarInactividadToolStripMenuItem.Size = new Size(146, 24);
+            marcarInactividadToolStripMenuItem.Text = "Marcar Inactividad";
+            marcarInactividadToolStripMenuItem.Click += marcarInactividadToolStripMenuItem_Click;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -97,5 +105,6 @@
         private ToolStripMenuItem separarResponsablesToolStripMenuItem;
         private Button cargarArchivo;
         private Label label1;
+        private ToolStripMenuItem marcarInactividadToolStripMenuItem;
     }
 }

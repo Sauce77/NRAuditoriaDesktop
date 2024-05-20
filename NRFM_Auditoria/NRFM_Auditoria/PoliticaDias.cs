@@ -1,9 +1,12 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,13 +61,24 @@ namespace NRFM_Auditoria
                 return false;
             }
         }
+        private bool esFecha(string fecha)
+        {
+            DateTime enteredDate;
+
+            if (DateTime.TryParse(fecha, out enteredDate))
+            {
+                return true;
+            }// si se logra convertir a fecha
+
+            return false;
+        }
 
         private void aplicarFiltro_Click(object sender, EventArgs e)
         {
-            string archivo = archivoNombre.Text;
+            string ruta_archivo = archivoNombre.Text;
             int numeroDias;
 
-            if(archivo == String.Empty)
+            if(ruta_archivo == String.Empty)
             {
                 MessageBox.Show("No se ha seleccionado un archivo");
             }// si no se ha seleccionado archivo
@@ -78,12 +92,72 @@ namespace NRFM_Auditoria
                 }// si el numero de dias es negativo
                 else
                 {
-                   Debug.WriteLine(numeroDias);
+                    DateTime fechaActualSinHora = DateTime.Today;
+
+                    var archivo = new XLWorkbook(ruta_archivo);
+                    foreach(IXLWorksheet hoja in archivo.Worksheets)
+                    {
+                        int finCabecera = FuncionesAuditoria.encontrarCabecera(hoja);
+                        if(finCabecera < 0)
+                        {
+                            MessageBox.Show("No se encontro la cabecera en la hoja " + hoja.Name);
+                            continue;
+                        }// no se encontro la cabecera
+
+                        char colUltimoAcceso = FuncionesAuditoria.encontrarColUltimoAcceso(hoja,finCabecera);
+                        if (colUltimoAcceso == '-')
+                        {
+                            continue; 
+                        }// No se encontro la columna de ultimo acceso
+
+                        //en caso que si la encontrara
+                        Debug.WriteLine(hoja.Name + " " + colUltimoAcceso);
+
+                        int index = finCabecera + 1;// el inicio de los datos
+
+                        // obtenemos los dias a los que aplicamos el filtro
+                        int dias_filtro = int.Parse((string)limiteUA.Text);
+
+                        // restamos a la fecha actual los dias del filtro
+                        fechaActualSinHora.AddDays(-dias_filtro);
+
+                        while (!hoja.Cell('A' + index.ToString()).IsEmpty())
+                        {
+                            if(!hoja.Cell(colUltimoAcceso + index.ToString()).IsEmpty())
+                            {
+                                string valor_fecha = hoja.Cell(colUltimoAcceso + index.ToString()).Value.ToString();
+                                if (esFecha(valor_fecha))
+                                {
+                                    // recortamos para que solo quede el formato dd/MM/yyyy
+                                    valor_fecha = valor_fecha.Substring(0, 10);
+
+                                    DateTime fecha = DateTime.ParseExact(valor_fecha, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+                                    // si la fecha es anterior a la actual despues de restar los dias del filtro
+                                    // se colorea dicha celda
+                                    int resultado = DateTime.Compare(fecha, fechaActualSinHora);
+                                    if (resultado <= 0)
+                                    {
+                                        hoja.Row(index).Style.Fill.BackgroundColor = XLColor.Yellow;
+                                    }// si la fecha es anterior o igual
+                                }// si se puede convertir a fecha
+
+                            }// si la celda tiene datos
+                            index++; 
+                        }// mientras tenga datos la primera columna
+
+                    }// fin for hojas del archivo
+
+                    //se han recorrido todas las hojas
+                    MessageBox.Show("Proceso terminado");
+                    archivo.SaveAs(ruta_archivo);
                 }// la cantidad de dias es correcta
             }// el campo contiene un numero
             else
             {
                 limiteUA.Text = string.Empty;
+
+
             }// no se ingreso un numero
 
         }

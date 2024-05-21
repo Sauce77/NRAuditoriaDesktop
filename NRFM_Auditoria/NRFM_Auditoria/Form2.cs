@@ -60,8 +60,8 @@ namespace NRFM_Auditoria
                     char colResponsable = FuncionesAuditoria.encontrarColResponsable(hoja, FIN_CABECERA);
 
                     // en caso de no encontrar la columna de responsables, que pase a la siguiente hoja
-                    if (colResponsable == '-')
-                    {
+                    if(colResponsable == '-')
+                        {
                         MessageBox.Show("No se ha encontrado la columna de responsable en " + hoja.Name);
                         continue; // si no se encuentra la columna que pase a la siguiente hoja
                     }//fin if no encuentra la columna Responsable
@@ -233,13 +233,6 @@ namespace NRFM_Auditoria
         private void label1_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void marcarInactividadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form politica_dias = new PoliticaDias();
-            politica_dias.Show();
-            this.Close();
         }
     }
 }

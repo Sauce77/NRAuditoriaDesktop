@@ -86,7 +86,7 @@ namespace NRFM_Auditoria
             return '-';
         }// fin encontrarColResponsable
 
-        public static char encontrarColUltimoAcceso(IXLWorksheet hoja, int filaEncabezado)
+        public char encontrarColUltimoAcceso(IXLWorksheet hoja, int filaEncabezado)
         {
             /*
                 Indicando la fila donde supuestamente se encuentra el encabezado de los datos (los titulos), recorre las columnas

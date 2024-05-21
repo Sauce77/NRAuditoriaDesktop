@@ -66,7 +66,7 @@ namespace NRFM_Auditoria
                         while (!hoja.Cell("A" + index.ToString()).IsEmpty())
                         {
                             // verificamos que la celda en cuestion no color
-                            while (hoja.Cell("A" + index.ToString()).Style.Fill.BackgroundColor != XLColor.FromIndex(64))
+                            while(hoja.Cell("A" + index.ToString()).Style.Fill.BackgroundColor != XLColor.FromIndex(64))
                             {
                                 index++; // si la celda tiene color que la ignore
                             }// fin si la celda tiene color
@@ -201,14 +201,7 @@ namespace NRFM_Auditoria
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
-        }
-
-        private void marcarInactividadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form politica_dias = new PoliticaDias();
-            politica_dias.Show();
-            this.Close();
+            
         }
     }
 }

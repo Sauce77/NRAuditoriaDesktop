@@ -30,10 +30,12 @@
         {
             menuStrip1 = new MenuStrip();
             generarTotalesToolStripMenuItem = new ToolStripMenuItem();
-            cargarArchivo = new Button();
-            listaProceso = new ListBox();
-            label1 = new Label();
             marcarInactividadToolStripMenuItem = new ToolStripMenuItem();
+            cargarArchivo = new Button();
+            label1 = new Label();
+            archivoNombre = new TextBox();
+            separarResp = new Button();
+            sepBajasApp = new Button();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -54,23 +56,22 @@
             generarTotalesToolStripMenuItem.Text = "Generar Totales";
             generarTotalesToolStripMenuItem.Click += generarTotalesToolStripMenuItem_Click;
             // 
+            // marcarInactividadToolStripMenuItem
+            // 
+            marcarInactividadToolStripMenuItem.Name = "marcarInactividadToolStripMenuItem";
+            marcarInactividadToolStripMenuItem.Size = new Size(146, 24);
+            marcarInactividadToolStripMenuItem.Text = "Marcar Inactividad";
+            marcarInactividadToolStripMenuItem.Click += marcarInactividadToolStripMenuItem_Click;
+            // 
             // cargarArchivo
             // 
-            cargarArchivo.Location = new Point(50, 39);
+            cargarArchivo.Location = new Point(614, 87);
             cargarArchivo.Name = "cargarArchivo";
             cargarArchivo.Size = new Size(138, 49);
             cargarArchivo.TabIndex = 1;
             cargarArchivo.Text = "Cargar Archivo";
             cargarArchivo.UseVisualStyleBackColor = true;
             cargarArchivo.Click += cargarArchivo_Click;
-            // 
-            // listaProceso
-            // 
-            listaProceso.FormattingEnabled = true;
-            listaProceso.Location = new Point(50, 108);
-            listaProceso.Name = "listaProceso";
-            listaProceso.Size = new Size(670, 284);
-            listaProceso.TabIndex = 2;
             // 
             // label1
             // 
@@ -82,20 +83,42 @@
             label1.TabIndex = 3;
             label1.Text = "Separar Responsables";
             // 
-            // marcarInactividadToolStripMenuItem
+            // archivoNombre
             // 
-            marcarInactividadToolStripMenuItem.Name = "marcarInactividadToolStripMenuItem";
-            marcarInactividadToolStripMenuItem.Size = new Size(146, 24);
-            marcarInactividadToolStripMenuItem.Text = "Marcar Inactividad";
-            marcarInactividadToolStripMenuItem.Click += marcarInactividadToolStripMenuItem_Click;
+            archivoNombre.Location = new Point(37, 98);
+            archivoNombre.Name = "archivoNombre";
+            archivoNombre.Size = new Size(558, 27);
+            archivoNombre.TabIndex = 4;
+            // 
+            // separarResp
+            // 
+            separarResp.Location = new Point(56, 158);
+            separarResp.Name = "separarResp";
+            separarResp.Size = new Size(138, 51);
+            separarResp.TabIndex = 5;
+            separarResp.Text = "Separar Responsables";
+            separarResp.UseVisualStyleBackColor = true;
+            separarResp.Click += separarResp_Click;
+            // 
+            // sepBajasApp
+            // 
+            sepBajasApp.Location = new Point(213, 158);
+            sepBajasApp.Name = "sepBajasApp";
+            sepBajasApp.Size = new Size(138, 51);
+            sepBajasApp.TabIndex = 6;
+            sepBajasApp.Text = "Separar Bajas Aplicativos";
+            sepBajasApp.UseVisualStyleBackColor = true;
+            sepBajasApp.Click += sepBajasApp_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(sepBajasApp);
+            Controls.Add(separarResp);
+            Controls.Add(archivoNombre);
             Controls.Add(label1);
-            Controls.Add(listaProceso);
             Controls.Add(cargarArchivo);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
@@ -112,9 +135,11 @@
 
         private MenuStrip menuStrip1;
         private Button cargarArchivo;
-        private ListBox listaProceso;
         private ToolStripMenuItem generarTotalesToolStripMenuItem;
         private Label label1;
         private ToolStripMenuItem marcarInactividadToolStripMenuItem;
+        private TextBox archivoNombre;
+        private Button separarResp;
+        private Button sepBajasApp;
     }
 }

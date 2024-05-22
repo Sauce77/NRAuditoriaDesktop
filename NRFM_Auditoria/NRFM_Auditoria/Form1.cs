@@ -11,6 +11,8 @@ namespace NRFM_Auditoria
         public const string RUTA_ARCHIVOS_RESPONSABLES = "Extracciones/Responsables";
         public const string RUTA_ARCHIVOS_BAJAS = "Extracciones/Bajas";
 
+        public const string NOMBRE_CONCENTRADO_BAJAS = "Concentrado Bajas"; 
+
         public Form1()
         {
             InitializeComponent();
@@ -254,6 +256,7 @@ namespace NRFM_Auditoria
             {
                 MessageBox.Show("Seleccione un archivo antes");
             }// fin if la ruta esta vacia
+
             else if (sePudoAbrirArchivo(ruta_archivo))
             {
                 // obtenemos la anio y mes del sistema
@@ -266,8 +269,14 @@ namespace NRFM_Auditoria
                 // declaramos un diccionario para guardar los libros de cada responsable
                 Dictionary<string, XLWorkbook> xl_bajas = new Dictionary<string, XLWorkbook>();
 
+                // insertamos formato para concentrado de bajas
+
+
+
+                // fin formato concentrado de bajas
+
                 //creamos un archivo para concentrado de bajas
-                xl_bajas["Concentrado Bajas"] = new XLWorkbook();
+                xl_bajas[NOMBRE_CONCENTRADO_BAJAS] = new XLWorkbook();
 
                 // iteramos en cada hoja del archivo
                 foreach(IXLWorksheet hoja in archivo.Worksheets)
@@ -284,13 +293,171 @@ namespace NRFM_Auditoria
                     {
                         if(hoja.Cell("A" + index.ToString()).Style.Fill.BackgroundColor != XLColor.FromIndex(64))
                         {
+                            if (!xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheets.Contains(hoja.Name))
+                            {
+                                xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheets.Add(hoja.Name);
+                                /*
+                                    Genera el formato de cada cabecera de las hojas de excel 
+                                */
+
+                                string[] Textos = {
+                                        "NR Finance Mexico",
+                                        hoja.Name,
+                                        "Certificacion de usuarios " + sistema_year.ToString(),
+                                        "Bajas de usuarios"
+                                    };
+
+                                int fila = 1; char columna = 'D';
+                                foreach (string texto in Textos)
+                                {
+                                    xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Value = texto;
+                                    // que este en negritas
+                                    xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.Bold = true;
+                                    // definir el tamano
+                                    xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.FontSize = 16;
+                                    // centrar el texto
+                                    xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                                    fila++;
+                                }// fin foreach escribir texto
+
+                                /*
+                                    Agregar el nombre de las columnas 
+                                */
+                                columna = 'A';
+                                while (!hoja.Cell(columna + Fin_Cabecera.ToString()).IsEmpty())
+                                {
+                                    // obtenemos el nombre de la columna del documento original
+                                    string nombre_col = hoja.Cell(columna + Fin_Cabecera.ToString()).Value.ToString();
+                                    // se lo asignamos en la hoja actual
+                                    xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Value = nombre_col;
+                                    // damos formato a la casilla
+
+                                    // fondo de la celda negro
+                                    xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Fill.SetBackgroundColor(XLColor.FromTheme(XLThemeColor.Text1));
+                                    // fuente color blanco
+                                    xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.FontColor = XLColor.White;
+                                    // en negritas
+                                    xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.Bold = true;
+
+                                    columna++;
+                                }//fin while fin cabecera no este vacio
+                                 // agregamos los filtros de las columnas
+                                xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Range('A' + fila.ToString(), columna + fila.ToString()).SetAutoFilter(true);
+
+                            }// fin if no existe hoja de concentrado de bajas del aplicativo actual
+
                             // Verficar si el libro existe, si tiene una hoja e insertar el formato de la cabecera
+                            if (!xl_bajas.ContainsKey(hoja.Name)) {
+                                xl_bajas[hoja.Name] = new XLWorkbook();
+                            }// si no contiene hoja del aplicativo
+
+                            if (!xl_bajas[hoja.Name].Worksheets.Contains(hoja.Name))
+                            {
+                                xl_bajas[hoja.Name].Worksheets.Add(hoja.Name);
+                                /*
+                                    Genera el formato de cada cabecera de las hojas de excel 
+                                */
+
+                                string[] Textos = {
+                                        "NR Finance Mexico",
+                                        hoja.Name,
+                                        "Certificacion de usuarios " + sistema_year.ToString(),
+                                        "Bajas de usuarios"
+                                    };
+
+                                int fila = 1; char columna = 'D';
+                                foreach (string texto in Textos)
+                                {
+                                    xl_bajas[hoja.Name].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Value = texto;
+                                    // que este en negritas
+                                    xl_bajas[hoja.Name].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.Bold = true;
+                                    // definir el tamano
+                                    xl_bajas[hoja.Name].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.FontSize = 16;
+                                    // centrar el texto
+                                    xl_bajas[hoja.Name].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
+                                    fila++;
+                                }// fin foreach escribir texto
+
+                                /*
+                                    Agregar el nombre de las columnas 
+                                */
+                                columna = 'A';
+                                while (!hoja.Cell(columna + Fin_Cabecera.ToString()).IsEmpty())
+                                {
+                                    // obtenemos el nombre de la columna del documento original
+                                    string nombre_col = hoja.Cell(columna + Fin_Cabecera.ToString()).Value.ToString();
+                                    // se lo asignamos en la hoja actual
+                                    xl_bajas[hoja.Name].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Value = nombre_col;
+                                    // damos formato a la casilla
+
+                                    // fondo de la celda negro
+                                    xl_bajas[hoja.Name].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Fill.SetBackgroundColor(XLColor.FromTheme(XLThemeColor.Text1));
+                                    // fuente color blanco
+                                    xl_bajas[hoja.Name].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.FontColor = XLColor.White;
+                                    // en negritas
+                                    xl_bajas[hoja.Name].Worksheet(hoja.Name).Cell(columna + fila.ToString()).Style.Font.Bold = true;
+
+                                    columna++;
+                                }//fin while fin cabecera no este vacio
+                                 // agregamos los filtros de las columnas
+                                xl_bajas[hoja.Name].Worksheet(hoja.Name).Range('A' + fila.ToString(), columna + fila.ToString()).SetAutoFilter(true);
+
+                            }// fin if no existe la hoja de la aplicacion actual
+
+                            char colActual = 'A';
+
+                            // buscamos la cabecera en la hoja actual 
+                            int Fin_Cabecera_HA = FuncionesAuditoria.encontrarCabecera(xl_bajas[hoja.Name].Worksheet(hoja.Name));
+                            int Fin_Cabecera_CB = FuncionesAuditoria.encontrarCabecera(xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name));
+                            // obtenemos el fin de los datos de la hoja del responsable
+                            int finDatos_HA = FuncionesAuditoria.encontrarFinDatos(xl_bajas[hoja.Name].Worksheet(hoja.Name), Fin_Cabecera_HA);
+                            int finDatos_CB = FuncionesAuditoria.encontrarFinDatos(xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name), Fin_Cabecera_CB);
+                            while (!hoja.Cell(colActual + Fin_Cabecera.ToString()).IsEmpty())
+                            {
+                                // obtenemps el valor de la celda en el archivo de certificacion 
+                                var celdaOrigen = hoja.Cell(colActual + index.ToString()).Value;
+                                //colocamos el valor al final de los datos
+                                xl_bajas[hoja.Name].Worksheet(hoja.Name).Cell(colActual + finDatos_HA.ToString()).Value = celdaOrigen;
+                                xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Cell(colActual + finDatos_CB.ToString()).Value = celdaOrigen;
+
+                                // agregamos bordes a la celda
+                                xl_bajas[hoja.Name].Worksheet(hoja.Name).Cell(colActual + finDatos_HA.ToString()).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                                xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Cell(colActual + finDatos_CB.ToString()).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+
+                                colActual++;
+
+                            }// fin while recorre una fila
+
+                            // coloreamos las filas
+                            xl_bajas[hoja.Name].Worksheet(hoja.Name).Row(finDatos_HA).Style.Fill.BackgroundColor = XLColor.Yellow;
+                            xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Row(finDatos_CB).Style.Fill.BackgroundColor = XLColor.Yellow;
                         }// si la celda tiene color
                         index++;
                     }// mientras la columna A no este vacia
-
-
                 }// fin for hojas del archivo
+
+                // creamos una carpeta especifica para este mes y anio
+                string carpeta_mensual = ruta_carpeta + "/" + sistema_month.ToString() + "-" + sistema_year.ToString();
+                if (!Directory.Exists(carpeta_mensual))
+                {
+                    Directory.CreateDirectory(carpeta_mensual);
+                }// si no existe la carpeta mensual
+
+                // comenzar a guardar los excel de responsables en la ruta carpeta
+                foreach (KeyValuePair<string, XLWorkbook>aplicativo  in xl_bajas)
+                {
+                    // ajustamos las columnas al texto en cada hoja
+                    foreach (IXLWorksheet hoja in aplicativo.Value.Worksheets)
+                    {
+                        hoja.Columns().AdjustToContents();
+                    }// fin foreach ajustar columnas
+
+                    aplicativo.Value.SaveAs(carpeta_mensual + "/" + aplicativo.Key + ".xlsx");
+                }// fin for guardar archivos responsable
+
+                MessageBox.Show("Proceso Terminado");
             }// if se pudo abrir el archivo
         }
     }

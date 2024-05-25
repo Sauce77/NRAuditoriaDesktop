@@ -76,10 +76,10 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(240, 28);
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(230, 41);
             label1.Name = "label1";
-            label1.Size = new Size(307, 41);
+            label1.Size = new Size(323, 41);
             label1.TabIndex = 3;
             label1.Text = "Separar Responsables";
             // 

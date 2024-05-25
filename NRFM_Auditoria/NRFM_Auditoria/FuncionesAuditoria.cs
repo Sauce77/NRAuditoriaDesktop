@@ -157,5 +157,23 @@ namespace NRFM_Auditoria
             string resultado = string.Join(" ", Nombres);
             return resultado.ToUpper();
         }// fin estandarizarNombres
+
+        public static bool sePudoAbrirArchivo(string ruta)
+        {
+            /*
+                Verifica que al ruta elegida, pueda ser abierta por ClosedXML
+                retorna true en caso de ser posible, de lo contrario false
+            */
+            try
+            {
+                var archivo = new XLWorkbook(ruta);
+                return true;
+            }
+            catch
+            {
+                MessageBox.Show("No se pudo abrir el archivo");
+                return false;
+            }
+        }// fin se pudo abrir
     }
 }

@@ -30,9 +30,15 @@
         {
             menuStrip1 = new MenuStrip();
             separarResponsablesToolStripMenuItem = new ToolStripMenuItem();
+            marcarInactividadToolStripMenuItem = new ToolStripMenuItem();
             cargarArchivo = new Button();
             label1 = new Label();
-            marcarInactividadToolStripMenuItem = new ToolStripMenuItem();
+            archivoActual = new TextBox();
+            label2 = new Label();
+            archivoPasado = new TextBox();
+            cargarArchivoPasado = new Button();
+            label3 = new Label();
+            generarTotales = new Button();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -53,11 +59,18 @@
             separarResponsablesToolStripMenuItem.Text = "Separar Responsables";
             separarResponsablesToolStripMenuItem.Click += separarResponsablesToolStripMenuItem_Click;
             // 
+            // marcarInactividadToolStripMenuItem
+            // 
+            marcarInactividadToolStripMenuItem.Name = "marcarInactividadToolStripMenuItem";
+            marcarInactividadToolStripMenuItem.Size = new Size(146, 24);
+            marcarInactividadToolStripMenuItem.Text = "Marcar Inactividad";
+            marcarInactividadToolStripMenuItem.Click += marcarInactividadToolStripMenuItem_Click;
+            // 
             // cargarArchivo
             // 
-            cargarArchivo.Location = new Point(51, 111);
+            cargarArchivo.Location = new Point(625, 134);
             cargarArchivo.Name = "cargarArchivo";
-            cargarArchivo.Size = new Size(170, 42);
+            cargarArchivo.Size = new Size(142, 27);
             cargarArchivo.TabIndex = 1;
             cargarArchivo.Text = "Cargar Archivo";
             cargarArchivo.UseVisualStyleBackColor = true;
@@ -66,26 +79,79 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(243, 41);
+            label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(263, 47);
             label1.Name = "label1";
-            label1.Size = new Size(252, 46);
+            label1.Size = new Size(236, 41);
             label1.TabIndex = 2;
             label1.Text = "Generar Totales";
             label1.Click += label1_Click;
             // 
-            // marcarInactividadToolStripMenuItem
+            // archivoActual
             // 
-            marcarInactividadToolStripMenuItem.Name = "marcarInactividadToolStripMenuItem";
-            marcarInactividadToolStripMenuItem.Size = new Size(146, 24);
-            marcarInactividadToolStripMenuItem.Text = "Marcar Inactividad";
-            marcarInactividadToolStripMenuItem.Click += marcarInactividadToolStripMenuItem_Click;
+            archivoActual.Location = new Point(41, 134);
+            archivoActual.Name = "archivoActual";
+            archivoActual.Size = new Size(569, 27);
+            archivoActual.TabIndex = 3;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Location = new Point(41, 108);
+            label2.Name = "label2";
+            label2.Size = new Size(94, 23);
+            label2.TabIndex = 4;
+            label2.Text = "Mes Actual";
+            // 
+            // archivoPasado
+            // 
+            archivoPasado.Location = new Point(41, 195);
+            archivoPasado.Name = "archivoPasado";
+            archivoPasado.Size = new Size(569, 27);
+            archivoPasado.TabIndex = 5;
+            // 
+            // cargarArchivoPasado
+            // 
+            cargarArchivoPasado.Location = new Point(625, 195);
+            cargarArchivoPasado.Name = "cargarArchivoPasado";
+            cargarArchivoPasado.Size = new Size(142, 27);
+            cargarArchivoPasado.TabIndex = 6;
+            cargarArchivoPasado.Text = "Cargar Archivo";
+            cargarArchivoPasado.UseVisualStyleBackColor = true;
+            cargarArchivoPasado.Click += cargarArchivoPasado_Click;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label3.Location = new Point(41, 169);
+            label3.Name = "label3";
+            label3.Size = new Size(100, 23);
+            label3.TabIndex = 7;
+            label3.Text = "Mes Pasado";
+            // 
+            // generarTotales
+            // 
+            generarTotales.Location = new Point(41, 258);
+            generarTotales.Name = "generarTotales";
+            generarTotales.Size = new Size(136, 29);
+            generarTotales.TabIndex = 8;
+            generarTotales.Text = "Generar Totales";
+            generarTotales.UseVisualStyleBackColor = true;
+            generarTotales.Click += generarTotales_Click;
             // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(generarTotales);
+            Controls.Add(label3);
+            Controls.Add(cargarArchivoPasado);
+            Controls.Add(archivoPasado);
+            Controls.Add(label2);
+            Controls.Add(archivoActual);
             Controls.Add(label1);
             Controls.Add(cargarArchivo);
             Controls.Add(menuStrip1);
@@ -106,5 +172,11 @@
         private Button cargarArchivo;
         private Label label1;
         private ToolStripMenuItem marcarInactividadToolStripMenuItem;
+        private TextBox archivoActual;
+        private Label label2;
+        private TextBox archivoPasado;
+        private Button cargarArchivoPasado;
+        private Label label3;
+        private Button generarTotales;
     }
 }

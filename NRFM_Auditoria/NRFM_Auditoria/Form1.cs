@@ -53,23 +53,6 @@ namespace NRFM_Auditoria
             this.Close();
         }
 
-        private bool sePudoAbrirArchivo(string ruta)
-        {
-            /*
-                Verifica que al ruta elegida, pueda ser abierta por ClosedXML
-                retorna true en caso de ser posible, de lo contrario false
-            */
-            try
-            {
-                var archivo = new XLWorkbook(ruta);
-                return true;
-            }
-            catch
-            {
-                MessageBox.Show("No se pudo abrir el archivo");
-                return false;
-            }
-        }
         private void separarResp_Click(object sender, EventArgs e)
         {
             // se establece la ruta para las extracciones
@@ -86,7 +69,7 @@ namespace NRFM_Auditoria
             {
                 MessageBox.Show("Seleccione un archivo antes");
             }// fin if la ruta esta vacia
-            else if (sePudoAbrirArchivo(ruta_archivo))
+            else if (FuncionesAuditoria.sePudoAbrirArchivo(ruta_archivo))
             {
                 // obtenemos la anio y mes del sistema
                 int sistema_month = DateTime.Now.Month;
@@ -257,7 +240,7 @@ namespace NRFM_Auditoria
                 MessageBox.Show("Seleccione un archivo antes");
             }// fin if la ruta esta vacia
 
-            else if (sePudoAbrirArchivo(ruta_archivo))
+            else if (FuncionesAuditoria.sePudoAbrirArchivo(ruta_archivo))
             {
                 // obtenemos la anio y mes del sistema
                 int sistema_month = DateTime.Now.Month;

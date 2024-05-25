@@ -31,13 +31,41 @@ namespace NRFM_Auditoria
 
         private void cargarArchivo_Click(object sender, EventArgs e)
         {
-            // obtenemos el mes y anio para guardar el documento
-            int mes = DateTime.Now.Month;
-            int anio = DateTime.Now.Year;
-
             string fileActual = FuncionesAuditoria.obtenerArchivoSeleccionado();
             if (fileActual != null)
             {
+                archivoActual.Text = fileActual;
+            }//fin archivo seleccionado
+        }// fin cargar archivo
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void marcarInactividadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form politica_dias = new PoliticaDias();
+            politica_dias.Show();
+            this.Close();
+        }
+
+        private void generarTotales_Click(object sender, EventArgs e)
+        {
+            string fileActual = archivoActual.Text;
+            string filePasado = archivoPasado.Text;
+
+            if (FuncionesAuditoria.sePudoAbrirArchivo(fileActual))
+            {
+                // obtenemos el mes y anio para guardar el documento
+                int mes = DateTime.Now.Month;
+                int anio = DateTime.Now.Year;
+
                 // declaramos un excel para insertar los totales
                 var archivoNuevo = new XLWorkbook();
 
@@ -53,7 +81,7 @@ namespace NRFM_Auditoria
                     {
                         continue;
                     }// si no se encuentra cabecera que se omita la hoja
-                    // guardamos el valor como fin de cabecera
+                     // guardamos el valor como fin de cabecera
                     int FIN_CABECERA = index;
 
                     // buscamos en donde se encuentra la columna de responsables
@@ -221,25 +249,17 @@ namespace NRFM_Auditoria
                     MessageBox.Show("No se puede generar el archivo");
                 }// fin no tiene hojas
 
+            }// fin si se puede abrir archivo actual
 
+        }// fin generar totales
+
+        private void cargarArchivoPasado_Click(object sender, EventArgs e)
+        {
+            string fileActual = FuncionesAuditoria.obtenerArchivoSeleccionado();
+            if (fileActual != null)
+            {
+                archivoPasado.Text = fileActual;
             }//fin archivo seleccionado
-        }// fin cargar archivo
-
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void marcarInactividadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form politica_dias = new PoliticaDias();
-            politica_dias.Show();
-            this.Close();
-        }
+        }// fin cargar archivo pasado
     }
 }

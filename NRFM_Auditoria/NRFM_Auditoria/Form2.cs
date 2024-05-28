@@ -58,7 +58,6 @@ namespace NRFM_Auditoria
         private void generarTotales_Click(object sender, EventArgs e)
         {
             string fileActual = archivoActual.Text;
-            string filePasado = archivoPasado.Text;
 
             if (FuncionesAuditoria.sePudoAbrirArchivo(fileActual))
             {
@@ -255,11 +254,7 @@ namespace NRFM_Auditoria
 
         private void cargarArchivoPasado_Click(object sender, EventArgs e)
         {
-            string fileActual = FuncionesAuditoria.obtenerArchivoSeleccionado();
-            if (fileActual != null)
-            {
-                archivoPasado.Text = fileActual;
-            }//fin archivo seleccionado
+
         }// fin cargar archivo pasado
     }
 }

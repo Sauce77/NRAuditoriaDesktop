@@ -35,9 +35,6 @@
             label1 = new Label();
             archivoActual = new TextBox();
             label2 = new Label();
-            archivoPasado = new TextBox();
-            cargarArchivoPasado = new Button();
-            label3 = new Label();
             generarTotales = new Button();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -104,36 +101,9 @@
             label2.TabIndex = 4;
             label2.Text = "Mes Actual";
             // 
-            // archivoPasado
-            // 
-            archivoPasado.Location = new Point(41, 195);
-            archivoPasado.Name = "archivoPasado";
-            archivoPasado.Size = new Size(569, 27);
-            archivoPasado.TabIndex = 5;
-            // 
-            // cargarArchivoPasado
-            // 
-            cargarArchivoPasado.Location = new Point(625, 195);
-            cargarArchivoPasado.Name = "cargarArchivoPasado";
-            cargarArchivoPasado.Size = new Size(142, 27);
-            cargarArchivoPasado.TabIndex = 6;
-            cargarArchivoPasado.Text = "Cargar Archivo";
-            cargarArchivoPasado.UseVisualStyleBackColor = true;
-            cargarArchivoPasado.Click += cargarArchivoPasado_Click;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(41, 169);
-            label3.Name = "label3";
-            label3.Size = new Size(100, 23);
-            label3.TabIndex = 7;
-            label3.Text = "Mes Pasado";
-            // 
             // generarTotales
             // 
-            generarTotales.Location = new Point(41, 258);
+            generarTotales.Location = new Point(41, 193);
             generarTotales.Name = "generarTotales";
             generarTotales.Size = new Size(136, 29);
             generarTotales.TabIndex = 8;
@@ -147,9 +117,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(generarTotales);
-            Controls.Add(label3);
-            Controls.Add(cargarArchivoPasado);
-            Controls.Add(archivoPasado);
             Controls.Add(label2);
             Controls.Add(archivoActual);
             Controls.Add(label1);
@@ -174,9 +141,6 @@
         private ToolStripMenuItem marcarInactividadToolStripMenuItem;
         private TextBox archivoActual;
         private Label label2;
-        private TextBox archivoPasado;
-        private Button cargarArchivoPasado;
-        private Label label3;
         private Button generarTotales;
     }
 }

@@ -36,6 +36,8 @@
             archivoActual = new TextBox();
             label2 = new Label();
             generarTotales = new Button();
+            barraProgresoTotales = new ProgressBar();
+            labelProgreso = new Label();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -111,11 +113,32 @@
             generarTotales.UseVisualStyleBackColor = true;
             generarTotales.Click += generarTotales_Click;
             // 
+            // barraProgresoTotales
+            // 
+            barraProgresoTotales.Location = new Point(71, 304);
+            barraProgresoTotales.Name = "barraProgresoTotales";
+            barraProgresoTotales.Size = new Size(643, 10);
+            barraProgresoTotales.TabIndex = 9;
+            barraProgresoTotales.Visible = false;
+            // 
+            // labelProgreso
+            // 
+            labelProgreso.AutoSize = true;
+            labelProgreso.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelProgreso.Location = new Point(57, 278);
+            labelProgreso.Name = "labelProgreso";
+            labelProgreso.Size = new Size(68, 20);
+            labelProgreso.TabIndex = 10;
+            labelProgreso.Text = "Progreso";
+            labelProgreso.Visible = false;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(labelProgreso);
+            Controls.Add(barraProgresoTotales);
             Controls.Add(generarTotales);
             Controls.Add(label2);
             Controls.Add(archivoActual);
@@ -142,5 +165,7 @@
         private TextBox archivoActual;
         private Label label2;
         private Button generarTotales;
+        private ProgressBar barraProgresoTotales;
+        private Label labelProgreso;
     }
 }

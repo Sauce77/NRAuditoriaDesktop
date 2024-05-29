@@ -36,6 +36,8 @@
             archivoNombre = new TextBox();
             separarResp = new Button();
             sepBajasApp = new Button();
+            barraProgresoRes = new ProgressBar();
+            labelProgreso = new Label();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -110,11 +112,31 @@
             sepBajasApp.UseVisualStyleBackColor = true;
             sepBajasApp.Click += sepBajasApp_Click;
             // 
+            // barraProgresoRes
+            // 
+            barraProgresoRes.Location = new Point(89, 323);
+            barraProgresoRes.Name = "barraProgresoRes";
+            barraProgresoRes.Size = new Size(605, 10);
+            barraProgresoRes.TabIndex = 7;
+            barraProgresoRes.Visible = false;
+            // 
+            // labelProgreso
+            // 
+            labelProgreso.AutoSize = true;
+            labelProgreso.Location = new Point(66, 300);
+            labelProgreso.Name = "labelProgreso";
+            labelProgreso.Size = new Size(68, 20);
+            labelProgreso.TabIndex = 8;
+            labelProgreso.Text = "Progreso";
+            labelProgreso.Visible = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(labelProgreso);
+            Controls.Add(barraProgresoRes);
             Controls.Add(sepBajasApp);
             Controls.Add(separarResp);
             Controls.Add(archivoNombre);
@@ -141,5 +163,7 @@
         private TextBox archivoNombre;
         private Button separarResp;
         private Button sepBajasApp;
+        private ProgressBar barraProgresoRes;
+        private Label labelProgreso;
     }
 }

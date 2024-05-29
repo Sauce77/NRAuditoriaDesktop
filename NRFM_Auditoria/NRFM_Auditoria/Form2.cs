@@ -61,6 +61,12 @@ namespace NRFM_Auditoria
 
             if (FuncionesAuditoria.sePudoAbrirArchivo(fileActual))
             {
+                labelProgreso.Visible = true;
+                barraProgresoTotales.Visible = true;
+
+                // valor barra de progreso
+                barraProgresoTotales.Value = barraProgresoTotales.Minimum;
+
                 // obtenemos el mes y anio para guardar el documento
                 int mes = DateTime.Now.Month;
                 int anio = DateTime.Now.Year;
@@ -70,6 +76,9 @@ namespace NRFM_Auditoria
 
                 // Empezamos a leer el excel actual
                 var libroActual = new XLWorkbook(fileActual);
+
+                // valor barra de progreso
+                barraProgresoTotales.Value = barraProgresoTotales.Maximum / 5;
 
                 //iteramos en cada hoja del libro de excel
                 foreach (IXLWorksheet hoja in libroActual.Worksheets)
@@ -211,6 +220,8 @@ namespace NRFM_Auditoria
 
                 }// fin foreach hojas del libro
 
+                // valor barra de progreso
+                barraProgresoTotales.Value = (4 * barraProgresoTotales.Maximum) / 5;
 
                 // variable para saber si el archivo tiene hojas
                 bool tiene_hojas = false;
@@ -236,6 +247,9 @@ namespace NRFM_Auditoria
 
                     sfd.FileName = nombre_nuevo_archivo;
 
+                    // valor barra de progreso
+                    barraProgresoTotales.Value = barraProgresoTotales.Maximum;
+
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
                         // guardar el nuevo archivo excel
@@ -247,6 +261,9 @@ namespace NRFM_Auditoria
                 {
                     MessageBox.Show("No se puede generar el archivo");
                 }// fin no tiene hojas
+
+                barraProgresoTotales.Visible = false;
+                labelProgreso.Visible = false;
 
             }// fin si se puede abrir archivo actual
 

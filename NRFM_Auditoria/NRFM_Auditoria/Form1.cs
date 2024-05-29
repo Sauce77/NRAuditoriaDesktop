@@ -58,11 +58,21 @@ namespace NRFM_Auditoria
             // se establece la ruta para las extracciones
             string ruta_carpeta = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, RUTA_ARCHIVOS_RESPONSABLES);
 
+            labelProgreso.Visible = true;
+            barraProgresoRes.Visible = true;
+
+            // valor barra de progreso
+            barraProgresoRes.Value = barraProgresoRes.Minimum;
+
             // en caso de que no exista folder de extraccion, crearlo
             if (!Directory.Exists(ruta_carpeta))
             {
                 Directory.CreateDirectory(ruta_carpeta);
             }// fi no existe carpeta Extraccion 
+
+
+            // valor barra de progreso
+            barraProgresoRes.Value = barraProgresoRes.Maximum / 5;
 
             string ruta_archivo = archivoNombre.Text;
             if (ruta_archivo == String.Empty)
@@ -199,6 +209,9 @@ namespace NRFM_Auditoria
                     }// fin else se encuentra la cabecera
                 }// fin for each para recorrer hojas
 
+                // valor barra progreso
+                barraProgresoRes.Value = (barraProgresoRes.Maximum * 4) / 5;
+
                 // creamos una carpeta especifica para este mes y anio
                 string carpeta_mensual = ruta_carpeta + "/" + sistema_month.ToString() + "-" + sistema_year.ToString();
                 if (!Directory.Exists(carpeta_mensual))
@@ -218,6 +231,9 @@ namespace NRFM_Auditoria
                     responsable.Value.SaveAs(carpeta_mensual + "/" + responsable.Key + ".xlsx");
                 }// fin for guardar archivos responsable
 
+                // valor barra progreso
+                barraProgresoRes.Value = barraProgresoRes.Maximum;
+
                 MessageBox.Show("Proceso Terminado");
             }// fin else if se pudo abrir el archivo
 
@@ -227,6 +243,12 @@ namespace NRFM_Auditoria
         {
             // se establece la ruta para las extracciones
             string ruta_carpeta = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, RUTA_ARCHIVOS_BAJAS);
+
+            labelProgreso.Visible = true;
+            barraProgresoRes.Visible = true;
+
+            // valor barra de progreso
+            barraProgresoRes.Value = barraProgresoRes.Minimum;
 
             // en caso de que no exista folder de extraccion, crearlo
             if (!Directory.Exists(ruta_carpeta))
@@ -252,11 +274,7 @@ namespace NRFM_Auditoria
                 // declaramos un diccionario para guardar los libros de cada responsable
                 Dictionary<string, XLWorkbook> xl_bajas = new Dictionary<string, XLWorkbook>();
 
-                // insertamos formato para concentrado de bajas
-
-
-
-                // fin formato concentrado de bajas
+                // insertamos formato para concentrado de baja
 
                 //creamos un archivo para concentrado de bajas
                 xl_bajas[NOMBRE_CONCENTRADO_BAJAS] = new XLWorkbook();
@@ -389,6 +407,9 @@ namespace NRFM_Auditoria
 
                             }// fin if no existe la hoja de la aplicacion actual
 
+                             // valor barra de progreso
+                            barraProgresoRes.Value = (barraProgresoRes.Maximum * 2) / 5;
+
                             char colActual = 'A';
 
                             // buscamos la cabecera en la hoja actual 
@@ -421,6 +442,9 @@ namespace NRFM_Auditoria
                     }// mientras la columna A no este vacia
                 }// fin for hojas del archivo
 
+                // valor barra de progreso
+                barraProgresoRes.Value = (barraProgresoRes.Maximum * 4) / 5;
+
                 // creamos una carpeta especifica para este mes y anio
                 string carpeta_mensual = ruta_carpeta + "/" + sistema_month.ToString() + "-" + sistema_year.ToString();
                 if (!Directory.Exists(carpeta_mensual))
@@ -439,6 +463,13 @@ namespace NRFM_Auditoria
 
                     aplicativo.Value.SaveAs(carpeta_mensual + "/" + aplicativo.Key + ".xlsx");
                 }// fin for guardar archivos responsable
+
+                // valor barra de progreso
+                barraProgresoRes.Value = barraProgresoRes.Maximum;
+
+
+                barraProgresoRes.Visible = false;
+                labelProgreso.Visible = false;
 
                 MessageBox.Show("Proceso Terminado");
             }// if se pudo abrir el archivo

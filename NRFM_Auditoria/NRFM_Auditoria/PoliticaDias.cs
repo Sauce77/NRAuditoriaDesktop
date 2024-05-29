@@ -78,7 +78,13 @@ namespace NRFM_Auditoria
             string ruta_archivo = archivoNombre.Text;
             int numeroDias;
 
-            if(ruta_archivo == String.Empty)
+            labelProgreso.Visible = true;
+            barraProgresoBajas.Visible = true;
+
+            // valor barra de progreso
+            barraProgresoBajas.Value = barraProgresoBajas.Minimum;
+
+            if (ruta_archivo == String.Empty)
             {
                 MessageBox.Show("No se ha seleccionado un archivo");
             }// si no se ha seleccionado archivo
@@ -93,6 +99,9 @@ namespace NRFM_Auditoria
                 else
                 {
                     DateTime fechaActualSinHora = DateTime.Today;
+
+                    // valor barra de progreso
+                    barraProgresoBajas.Value = (barraProgresoBajas.Maximum * 2) / 5;
 
                     var archivo = new XLWorkbook(ruta_archivo);
                     foreach(IXLWorksheet hoja in archivo.Worksheets)
@@ -148,9 +157,13 @@ namespace NRFM_Auditoria
 
                     }// fin for hojas del archivo
 
+                    // valor de barra de progreso
+                    barraProgresoBajas.Value = barraProgresoBajas.Maximum;
+
                     //se han recorrido todas las hojas
                     MessageBox.Show("Proceso terminado");
                     archivo.SaveAs(ruta_archivo);
+
                 }// la cantidad de dias es correcta
             }// el campo contiene un numero
             else
@@ -159,7 +172,8 @@ namespace NRFM_Auditoria
 
 
             }// no se ingreso un numero
-
+            barraProgresoBajas.Visible = false;
+            labelProgreso.Visible = false;
         }
     }
 }

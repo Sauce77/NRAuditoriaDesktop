@@ -37,6 +37,8 @@
             limiteUA = new TextBox();
             label2 = new Label();
             aplicarFiltro = new Button();
+            barraProgresoBajas = new ProgressBar();
+            labelProgreso = new Label();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -119,11 +121,31 @@
             aplicarFiltro.UseVisualStyleBackColor = true;
             aplicarFiltro.Click += aplicarFiltro_Click;
             // 
+            // barraProgresoBajas
+            // 
+            barraProgresoBajas.Location = new Point(81, 297);
+            barraProgresoBajas.Name = "barraProgresoBajas";
+            barraProgresoBajas.Size = new Size(646, 13);
+            barraProgresoBajas.TabIndex = 7;
+            barraProgresoBajas.Visible = false;
+            // 
+            // labelProgreso
+            // 
+            labelProgreso.AutoSize = true;
+            labelProgreso.Location = new Point(65, 265);
+            labelProgreso.Name = "labelProgreso";
+            labelProgreso.Size = new Size(68, 20);
+            labelProgreso.TabIndex = 8;
+            labelProgreso.Text = "Progreso";
+            labelProgreso.Visible = false;
+            // 
             // PoliticaDias
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(labelProgreso);
+            Controls.Add(barraProgresoBajas);
             Controls.Add(aplicarFiltro);
             Controls.Add(label2);
             Controls.Add(limiteUA);
@@ -151,5 +173,7 @@
         private TextBox limiteUA;
         private Label label2;
         private Button aplicarFiltro;
+        private ProgressBar barraProgresoBajas;
+        private Label labelProgreso;
     }
 }

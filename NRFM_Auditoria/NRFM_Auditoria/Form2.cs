@@ -18,6 +18,9 @@ namespace NRFM_Auditoria
 
         public const int FILAS_ENTRE_RESPONSABLES = 1;
 
+        public static XLColor COLOR_MES_PASADO = XLColor.FromTheme(XLThemeColor.Accent1, 0.8);
+        public static XLColor COLOR_MES_ACTUAL = XLColor.FromTheme(XLThemeColor.Accent1, 0.9);
+
         public Form2()
         {
             InitializeComponent();
@@ -145,27 +148,44 @@ namespace NRFM_Auditoria
                     // agregamos una hoja para la aplicacion
                     var hojaAplicacion = archivoNuevo.Worksheets.Add(hoja.Name);
 
+                    index = 2;
+
+                    // recorremos todos los titulos de la hoja
+                    foreach (string titulo in CAMPOS_TITULO)
+                    {
+                        hojaAplicacion.Cell("A" + index.ToString()).Value = titulo;
+
+                        hojaAplicacion.Cell("A" + index.ToString()).Style.Font.Bold = true;
+                        hojaAplicacion.Range("A" + index.ToString(), "G" + index.ToString()).Style.Font.FontSize = 14;
+                        hojaAplicacion.Row(index).InsertRowsBelow(1);
+                        index++;
+                    }// fin for campos de titulo de hojas
+
+                    // estilo de los titulos de las columnas
+                    hojaAplicacion.Range("A" + index.ToString(), "D" + index.ToString()).Style.Font.Bold = true;
+                    hojaAplicacion.Range("A" + index.ToString(), "D" + index.ToString()).Style.Font.FontSize = 14;
+                    hojaAplicacion.Range("A" + index.ToString(), "D" + index.ToString()).Style.Font.FontColor = XLColor.White;
+                    hojaAplicacion.Range("A" + index.ToString(), "D" + index.ToString()).Style.Fill.BackgroundColor = XLColor.Black;
+                    hojaAplicacion.Range("A" + index.ToString(), "D" + index.ToString()).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
                     // anadimos titulos a las columnas
 
                     // titulo Responsables
-                    hojaAplicacion.Cell("A" + (FIN_CABECERA - 1).ToString()).Value = FuncionesAuditoria.NOMBRE_COL_RESPONSABLE;
+                    hojaAplicacion.Cell("A" + index.ToString()).Value = FuncionesAuditoria.NOMBRE_COL_RESPONSABLE;
 
                     // titulo mes pasado
-                    hojaAplicacion.Cell("C" + (FIN_CABECERA - 1).ToString()).Value = ((mes - 1).ToString() + "-" + anio.ToString());
+                    hojaAplicacion.Cell("C" + index.ToString()).Value = ((mes - 1).ToString() + "-" + anio.ToString());
 
                     // titulo mes actual
-                    hojaAplicacion.Cell("D" + (FIN_CABECERA - 1).ToString()).Value = (mes.ToString() + "-" + anio.ToString());
+                    hojaAplicacion.Cell("D" + index.ToString()).Value = (mes.ToString() + "-" + anio.ToString());
 
                     // utilizamos un index para saber en que fila nos encontramos
-                    int fila = FIN_CABECERA;
+                    int fila = index+1;
 
-                    // formula para total de usuarios
-                    string[] formula_titulos = ["=","=","="];
 
                     // prueba para saber el conteo de cada responsable
                     foreach (KeyValuePair<string, int[]> conteo_responsable in conteo)
                     {
-
                         // escribimos el nombre del responsable
                         hojaAplicacion.Cell("A" + fila.ToString()).Value = conteo_responsable.Key;
 
@@ -179,8 +199,8 @@ namespace NRFM_Auditoria
                             hojaAplicacion.Cell("D" + (fila + i).ToString()).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
                             // estilo columnas numeros
-                            hojaAplicacion.Cell("C" + (fila + i).ToString()).Style.Fill.BackgroundColor = XLColor.FromTheme(XLThemeColor.Accent1, 0.8);
-                            hojaAplicacion.Cell("D" + (fila + i).ToString()).Style.Fill.BackgroundColor = XLColor.FromTheme(XLThemeColor.Accent1, 0.9);
+                            hojaAplicacion.Cell("C" + (fila + i).ToString()).Style.Fill.BackgroundColor = COLOR_MES_PASADO;
+                            hojaAplicacion.Cell("D" + (fila + i).ToString()).Style.Fill.BackgroundColor = COLOR_MES_ACTUAL;
 
                             switch (i)
                             {
@@ -192,43 +212,41 @@ namespace NRFM_Auditoria
                                     break; // total enviados a responsable
                                 case 3:
                                     hojaAplicacion.Cell("D" + (fila + i).ToString()).Value = conteo_responsable.Value[1];
-                                    formula_titulos[1] += "+D" + (fila + 2).ToString();
+                                    // calcular bajas automaticas mes actual
+                                    hojaAplicacion.Cell("D3").FormulaA1 += "+D" + (fila + 3).ToString();
+                                    // calcular bajas automaticas mes pasado
+                                    hojaAplicacion.Cell("C3").FormulaA1 += "+C" + (fila + 3).ToString();
                                     break;
                                 case 4:
-                                    formula_titulos[2] += "+D" + (fila + 3).ToString();
+                                    // calcular bajas responsable mes actual
+                                    hojaAplicacion.Cell("D4").FormulaA1 += "+D" + (fila + 4).ToString();
+                                    // calcular bajas responsable mes pasado
+                                    hojaAplicacion.Cell("C4").FormulaA1 += "+C" + (fila + 4).ToString();
                                     break;
                                 case 5:
                                     hojaAplicacion.Cell("D" + (fila + i).ToString()).FormulaA1 = "=D" + (fila+1).ToString() + "-D" + (fila+4).ToString();
-                                    formula_titulos[0] += "+D" + (fila + i).ToString();
+                                    // calcular total usuarios mes actual
+                                    hojaAplicacion.Cell("D2").FormulaA1 += "+D" + (fila + i).ToString();
+                                    // calcular total usuarios mes pasado
+                                    hojaAplicacion.Cell("C2").FormulaA1 += "+C" + (fila + i).ToString();
                                     break;
                             }//fin switch comprobar si insertar cuenta
 
+                            //b
+                            hojaAplicacion.Cell("C2").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            hojaAplicacion.Cell("C3").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            hojaAplicacion.Cell("C4").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            hojaAplicacion.Cell("D2").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            hojaAplicacion.Cell("D3").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            hojaAplicacion.Cell("D4").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+
+                            hojaAplicacion.Range("C2","C4").Style.Fill.BackgroundColor = COLOR_MES_PASADO;
+                            hojaAplicacion.Range("D2","D4").Style.Fill.BackgroundColor = COLOR_MES_ACTUAL;
 
                         }//fin campos por responsables
 
                         fila += CAMPOS_RESPONSABLE.Length + FILAS_ENTRE_RESPONSABLES;
                     }//fin foreach diccionario
-
-                    index = 2;
-                    
-                    // recorremos todos los titulos de la hoja
-                    foreach(string titulo in CAMPOS_TITULO)
-                    {
-                        hojaAplicacion.Cell("A" + index.ToString()).Value = "Total Usuarios";
-                        hojaAplicacion.Cell("B" + index.ToString()).FormulaA1 = formula_titulos[index-2];
-
-                        hojaAplicacion.Cell("A" + index.ToString()).Style.Font.Bold = true;
-                        hojaAplicacion.Range("A" + index.ToString(),"B" + index.ToString()).Style.Font.FontSize = 14;
-                        hojaAplicacion.Row(index).InsertRowsBelow(1);
-                        index++;
-                    }// fin for campos de titulo de hojas
-
-                    // estilo de los titulos de las columnas
-                    hojaAplicacion.Range("A" + (index - 1).ToString(), "D" + (index - 1).ToString()).Style.Font.Bold = true;
-                    hojaAplicacion.Range("A" + (index - 1).ToString(), "D" + (index - 1).ToString()).Style.Font.FontSize = 14;
-                    hojaAplicacion.Range("A" + (index - 1).ToString(), "D" + (index - 1).ToString()).Style.Font.FontColor = XLColor.White;
-                    hojaAplicacion.Range("A" + (index - 1).ToString(), "D" + (index - 1).ToString()).Style.Fill.BackgroundColor = XLColor.Black;
-                    hojaAplicacion.Range("A" + (index - 1).ToString(), "D" + (index - 1).ToString()).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
                     // ajustar el ancho de las columnas
                     hojaAplicacion.Columns().AdjustToContents();

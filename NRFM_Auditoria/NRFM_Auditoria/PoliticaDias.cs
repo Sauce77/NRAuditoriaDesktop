@@ -147,7 +147,7 @@ namespace NRFM_Auditoria
                                     int resultado = DateTime.Compare(fecha, fechaActualSinHora);
                                     if (resultado <= 0)
                                     {
-                                        hoja.Row(index).Style.Fill.BackgroundColor = XLColor.Yellow;
+                                        hoja.Row(index).Style.Fill.BackgroundColor = FuncionesAuditoria.COLOR_CELDAS_BAJA;
                                     }// si la fecha es anterior o igual
                                 }// si se puede convertir a fecha
 

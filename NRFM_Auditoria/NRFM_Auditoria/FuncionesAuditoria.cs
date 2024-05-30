@@ -18,6 +18,8 @@ namespace NRFM_Auditoria
 
         public const int MAX_FILA_CABECERA = 1000;
 
+        public  static XLColor COLOR_CELDAS_BAJA = XLColor.FromArgb(255,146,146); 
+
         /*
                 COMIENZAN FUNCIONES PARA LA CERTIFICACION
         */
@@ -99,7 +101,7 @@ namespace NRFM_Auditoria
             while (!hoja.Cell(colResponsable + filaEncabezado.ToString()).IsEmpty())
             {
                 //Debug.WriteLine(hoja.Cell(colResponsable + index.ToString()).Value.ToString());
-                if (hoja.Cell(colResponsable + filaEncabezado.ToString()).Value.ToString() == NOMBRE_COL_ULTIMO_ACCESO)
+                if (hoja.Cell(colResponsable + filaEncabezado.ToString()).Value.ToString().Contains(NOMBRE_COL_ULTIMO_ACCESO))
                 {
                     return colResponsable;
                 }//fin if celda con valor Responsable

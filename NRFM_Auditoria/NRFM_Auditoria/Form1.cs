@@ -435,8 +435,8 @@ namespace NRFM_Auditoria
                             }// fin while recorre una fila
 
                             // coloreamos las filas
-                            xl_bajas[hoja.Name].Worksheet(hoja.Name).Row(finDatos_HA).Style.Fill.BackgroundColor = XLColor.Yellow;
-                            xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Row(finDatos_CB).Style.Fill.BackgroundColor = XLColor.Yellow;
+                            xl_bajas[hoja.Name].Worksheet(hoja.Name).Row(finDatos_HA).Style.Fill.BackgroundColor = FuncionesAuditoria.COLOR_CELDAS_BAJA;
+                            xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheet(hoja.Name).Row(finDatos_CB).Style.Fill.BackgroundColor = FuncionesAuditoria.COLOR_CELDAS_BAJA;
                         }// si la celda tiene color
                         index++;
                     }// mientras la columna A no este vacia

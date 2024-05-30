@@ -13,6 +13,7 @@ namespace NRFM_Auditoria
 {
     public partial class Form2 : Form
     {
+        public string[] CAMPOS_TITULO = ["Total Usuarios", "Total Bajas Automaticas", "Total Bajas Responsable"];
         public string[] CAMPOS_RESPONSABLE = ["Total Usuarios", "Enviado Responsable", "Respuesta Responsable", "Baja Automatica", "Baja Responsable", "Conservar Acceso Responsable"];
 
         public const int FILAS_ENTRE_RESPONSABLES = 1;
@@ -158,6 +159,9 @@ namespace NRFM_Auditoria
                     // utilizamos un index para saber en que fila nos encontramos
                     int fila = FIN_CABECERA;
 
+                    // formula para total de usuarios
+                    string[] formula_titulos = ["=","=","="];
+
                     // prueba para saber el conteo de cada responsable
                     foreach (KeyValuePair<string, int[]> conteo_responsable in conteo)
                     {
@@ -188,32 +192,43 @@ namespace NRFM_Auditoria
                                     break; // total enviados a responsable
                                 case 3:
                                     hojaAplicacion.Cell("D" + (fila + i).ToString()).Value = conteo_responsable.Value[1];
+                                    formula_titulos[1] += "+D" + (fila + 2).ToString();
+                                    break;
+                                case 4:
+                                    formula_titulos[2] += "+D" + (fila + 3).ToString();
                                     break;
                                 case 5:
-                                    hojaAplicacion.Cell("D" + (fila + i).ToString()).Value = conteo_responsable.Value[2];
+                                    hojaAplicacion.Cell("D" + (fila + i).ToString()).FormulaA1 = "=D" + (fila+1).ToString() + "-D" + (fila+4).ToString();
+                                    formula_titulos[0] += "+D" + (fila + i).ToString();
                                     break;
                             }//fin switch comprobar si insertar cuenta
 
 
-                        }//fin campos por responsable
+                        }//fin campos por responsables
 
                         fila += CAMPOS_RESPONSABLE.Length + FILAS_ENTRE_RESPONSABLES;
                     }//fin foreach diccionario
 
-                    // agregamos el total de usuarios de la aplicacion
-                    hojaAplicacion.Cell("A2").Value = "Total Usuarios";
-                    hojaAplicacion.Cell("B2").Value = total_aplicacion;
+                    index = 2;
+                    
+                    // recorremos todos los titulos de la hoja
+                    foreach(string titulo in CAMPOS_TITULO)
+                    {
+                        hojaAplicacion.Cell("A" + index.ToString()).Value = "Total Usuarios";
+                        hojaAplicacion.Cell("B" + index.ToString()).FormulaA1 = formula_titulos[index-2];
 
-                    // estilo del total usuarios
-                    hojaAplicacion.Cell("A2").Style.Font.Bold = true;
-                    hojaAplicacion.Range("A2", "B2").Style.Font.FontSize = 14;
+                        hojaAplicacion.Cell("A" + index.ToString()).Style.Font.Bold = true;
+                        hojaAplicacion.Range("A" + index.ToString(),"B" + index.ToString()).Style.Font.FontSize = 14;
+                        hojaAplicacion.Row(index).InsertRowsBelow(1);
+                        index++;
+                    }// fin for campos de titulo de hojas
 
                     // estilo de los titulos de las columnas
-                    hojaAplicacion.Range("A" + (FIN_CABECERA - 1).ToString(), "D" + (FIN_CABECERA - 1).ToString()).Style.Font.Bold = true;
-                    hojaAplicacion.Range("A" + (FIN_CABECERA - 1).ToString(), "D" + (FIN_CABECERA - 1).ToString()).Style.Font.FontSize = 14;
-                    hojaAplicacion.Range("A" + (FIN_CABECERA - 1).ToString(), "D" + (FIN_CABECERA - 1).ToString()).Style.Font.FontColor = XLColor.White;
-                    hojaAplicacion.Range("A" + (FIN_CABECERA - 1).ToString(), "D" + (FIN_CABECERA - 1).ToString()).Style.Fill.BackgroundColor = XLColor.Black;
-                    hojaAplicacion.Range("A" + (FIN_CABECERA - 1).ToString(), "D" + (FIN_CABECERA - 1).ToString()).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+                    hojaAplicacion.Range("A" + (index - 1).ToString(), "D" + (index - 1).ToString()).Style.Font.Bold = true;
+                    hojaAplicacion.Range("A" + (index - 1).ToString(), "D" + (index - 1).ToString()).Style.Font.FontSize = 14;
+                    hojaAplicacion.Range("A" + (index - 1).ToString(), "D" + (index - 1).ToString()).Style.Font.FontColor = XLColor.White;
+                    hojaAplicacion.Range("A" + (index - 1).ToString(), "D" + (index - 1).ToString()).Style.Fill.BackgroundColor = XLColor.Black;
+                    hojaAplicacion.Range("A" + (index - 1).ToString(), "D" + (index - 1).ToString()).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
                     // ajustar el ancho de las columnas
                     hojaAplicacion.Columns().AdjustToContents();

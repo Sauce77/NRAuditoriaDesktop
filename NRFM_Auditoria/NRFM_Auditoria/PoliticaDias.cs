@@ -150,7 +150,15 @@ namespace NRFM_Auditoria
                                         hoja.Row(index).Style.Fill.BackgroundColor = FuncionesAuditoria.COLOR_CELDAS_BAJA;
                                     }// si la fecha es anterior o igual
                                 }// si se puede convertir a fecha
+                                else if(valor_fecha == String.Empty || valor_fecha.ToLower() == "null")
+                                {
+                                    // obtenemos la columna de fecha de creacion
+                                    char col_Creacion = FuncionesAuditoria.encontrarColFechaCreacion(hoja, finCabecera);
 
+                                    // comprueba si existe la columna fecha de creacion
+
+                                    string calor_fecha_creaicion = hoja.Cell(colUltimoAcceso + index.ToString()).Value.ToString();
+                                }// fin for el es
                             }// si la celda tiene datos
                             index++; 
                         }// mientras tenga datos la primera columna

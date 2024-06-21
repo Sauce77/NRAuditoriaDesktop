@@ -43,6 +43,24 @@ namespace NRFM_Auditoria
             return null;
         }// fin obtenerArchivoSeleccionado
 
+        public static string obtenerMultiplesArchivoSeleccionado()
+        {
+            /*
+                Obtiene las rutas del archivo seleccionada en el explorador de archivos desplegado, si no se selecciona
+                un archivo retorna null
+            */
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = FILTROS_ARCHIVOS_EXCEL;
+            ofd.Multiselect = true;
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                return ofd.FileName;
+            }// si el archivo esta ok
+
+            return null;
+        }// fin obtenerArchivoSeleccionado
+
         public static int encontrarCabecera(IXLWorksheet hoja)
         {
             /*

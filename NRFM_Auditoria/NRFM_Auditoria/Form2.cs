@@ -180,7 +180,7 @@ namespace NRFM_Auditoria
                     hojaAplicacion.Cell("D" + index.ToString()).Value = (mes.ToString() + "-" + anio.ToString());
 
                     // utilizamos un index para saber en que fila nos encontramos
-                    int fila = index+1;
+                    int fila = index + 1;
 
 
                     // prueba para saber el conteo de cada responsable
@@ -224,7 +224,7 @@ namespace NRFM_Auditoria
                                     hojaAplicacion.Cell("C4").FormulaA1 += "+C" + (fila + 4).ToString();
                                     break;
                                 case 5:
-                                    hojaAplicacion.Cell("D" + (fila + i).ToString()).FormulaA1 = "=D" + (fila+1).ToString() + "-D" + (fila+4).ToString();
+                                    hojaAplicacion.Cell("D" + (fila + i).ToString()).FormulaA1 = "=D" + (fila + 1).ToString() + "-D" + (fila + 4).ToString();
                                     // calcular total usuarios mes actual
                                     hojaAplicacion.Cell("D2").FormulaA1 += "+D" + (fila + i).ToString();
                                     // calcular total usuarios mes pasado
@@ -240,8 +240,8 @@ namespace NRFM_Auditoria
                             hojaAplicacion.Cell("D3").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             hojaAplicacion.Cell("D4").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
-                            hojaAplicacion.Range("C2","C4").Style.Fill.BackgroundColor = COLOR_MES_PASADO;
-                            hojaAplicacion.Range("D2","D4").Style.Fill.BackgroundColor = COLOR_MES_ACTUAL;
+                            hojaAplicacion.Range("C2", "C4").Style.Fill.BackgroundColor = COLOR_MES_PASADO;
+                            hojaAplicacion.Range("D2", "D4").Style.Fill.BackgroundColor = COLOR_MES_ACTUAL;
 
                         }//fin campos por responsables
 
@@ -306,5 +306,12 @@ namespace NRFM_Auditoria
         {
 
         }// fin cargar archivo pasado
+
+        private void protegerArchivoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form Proteger_Archivo = new ProtegerArchivos();
+            Proteger_Archivo.Show();
+            this.Close();
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace NRFM_Auditoria
         public const string RUTA_ARCHIVOS_RESPONSABLES = "Extracciones/Responsables";
         public const string RUTA_ARCHIVOS_BAJAS = "Extracciones/Bajas";
 
-        public const string NOMBRE_CONCENTRADO_BAJAS = "Concentrado Bajas"; 
+        public const string NOMBRE_CONCENTRADO_BAJAS = "Concentrado Bajas";
 
         public Form1()
         {
@@ -280,7 +280,7 @@ namespace NRFM_Auditoria
                 xl_bajas[NOMBRE_CONCENTRADO_BAJAS] = new XLWorkbook();
 
                 // iteramos en cada hoja del archivo
-                foreach(IXLWorksheet hoja in archivo.Worksheets)
+                foreach (IXLWorksheet hoja in archivo.Worksheets)
                 {
                     int Fin_Cabecera = FuncionesAuditoria.encontrarCabecera(hoja);
                     if (Fin_Cabecera == -1)
@@ -292,7 +292,7 @@ namespace NRFM_Auditoria
 
                     while (!hoja.Cell('A' + index.ToString()).IsEmpty())
                     {
-                        if(hoja.Cell("A" + index.ToString()).Style.Fill.BackgroundColor != XLColor.FromIndex(64))
+                        if (hoja.Cell("A" + index.ToString()).Style.Fill.BackgroundColor != XLColor.FromIndex(64))
                         {
                             if (!xl_bajas[NOMBRE_CONCENTRADO_BAJAS].Worksheets.Contains(hoja.Name))
                             {
@@ -349,7 +349,8 @@ namespace NRFM_Auditoria
                             }// fin if no existe hoja de concentrado de bajas del aplicativo actual
 
                             // Verficar si el libro existe, si tiene una hoja e insertar el formato de la cabecera
-                            if (!xl_bajas.ContainsKey(hoja.Name)) {
+                            if (!xl_bajas.ContainsKey(hoja.Name))
+                            {
                                 xl_bajas[hoja.Name] = new XLWorkbook();
                             }// si no contiene hoja del aplicativo
 
@@ -407,7 +408,7 @@ namespace NRFM_Auditoria
 
                             }// fin if no existe la hoja de la aplicacion actual
 
-                             // valor barra de progreso
+                            // valor barra de progreso
                             barraProgresoRes.Value = (barraProgresoRes.Maximum * 2) / 5;
 
                             char colActual = 'A';
@@ -453,7 +454,7 @@ namespace NRFM_Auditoria
                 }// si no existe la carpeta mensual
 
                 // comenzar a guardar los excel de responsables en la ruta carpeta
-                foreach (KeyValuePair<string, XLWorkbook>aplicativo  in xl_bajas)
+                foreach (KeyValuePair<string, XLWorkbook> aplicativo in xl_bajas)
                 {
                     // ajustamos las columnas al texto en cada hoja
                     foreach (IXLWorksheet hoja in aplicativo.Value.Worksheets)
@@ -473,6 +474,13 @@ namespace NRFM_Auditoria
 
                 MessageBox.Show("Proceso Terminado");
             }// if se pudo abrir el archivo
+        }
+
+        private void protegerArchivoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form Proteger_Archivo = new ProtegerArchivos();
+            Proteger_Archivo.Show();
+            this.Close();
         }
     }
 }

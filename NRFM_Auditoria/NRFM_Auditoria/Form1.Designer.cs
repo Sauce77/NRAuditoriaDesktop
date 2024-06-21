@@ -38,13 +38,14 @@
             sepBajasApp = new Button();
             barraProgresoRes = new ProgressBar();
             labelProgreso = new Label();
+            protegerArchivoToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { generarTotalesToolStripMenuItem, marcarInactividadToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { generarTotalesToolStripMenuItem, marcarInactividadToolStripMenuItem, protegerArchivoToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 28);
@@ -130,6 +131,13 @@
             labelProgreso.Text = "Progreso";
             labelProgreso.Visible = false;
             // 
+            // protegerArchivoToolStripMenuItem
+            // 
+            protegerArchivoToolStripMenuItem.Name = "protegerArchivoToolStripMenuItem";
+            protegerArchivoToolStripMenuItem.Size = new Size(134, 24);
+            protegerArchivoToolStripMenuItem.Text = "Proteger Archivo";
+            protegerArchivoToolStripMenuItem.Click += protegerArchivoToolStripMenuItem_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -165,5 +173,6 @@
         private Button sepBajasApp;
         private ProgressBar barraProgresoRes;
         private Label labelProgreso;
+        private ToolStripMenuItem protegerArchivoToolStripMenuItem;
     }
 }

@@ -39,6 +39,7 @@
             aplicarFiltro = new Button();
             barraProgresoBajas = new ProgressBar();
             labelProgreso = new Label();
+            protegerArchivosToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -72,7 +73,7 @@
             // menuStrip1
             // 
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { contarTotalesToolStripMenuItem, separarResponsabesToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { contarTotalesToolStripMenuItem, separarResponsabesToolStripMenuItem, protegerArchivosToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 28);
@@ -139,6 +140,13 @@
             labelProgreso.Text = "Progreso";
             labelProgreso.Visible = false;
             // 
+            // protegerArchivosToolStripMenuItem
+            // 
+            protegerArchivosToolStripMenuItem.Name = "protegerArchivosToolStripMenuItem";
+            protegerArchivosToolStripMenuItem.Size = new Size(140, 24);
+            protegerArchivosToolStripMenuItem.Text = "Proteger Archivos";
+            protegerArchivosToolStripMenuItem.Click += protegerArchivosToolStripMenuItem_Click;
+            // 
             // PoliticaDias
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -175,5 +183,6 @@
         private Button aplicarFiltro;
         private ProgressBar barraProgresoBajas;
         private Label labelProgreso;
+        private ToolStripMenuItem protegerArchivosToolStripMenuItem;
     }
 }

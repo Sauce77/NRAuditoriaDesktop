@@ -43,7 +43,7 @@ namespace NRFM_Auditoria
             return null;
         }// fin obtenerArchivoSeleccionado
 
-        public static string obtenerMultiplesArchivoSeleccionado()
+        public static string[] obtenerMultiplesArchivoSeleccionado()
         {
             /*
                 Obtiene las rutas del archivo seleccionada en el explorador de archivos desplegado, si no se selecciona
@@ -55,7 +55,7 @@ namespace NRFM_Auditoria
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                return ofd.FileName;
+                return ofd.FileNames;
             }// si el archivo esta ok
 
             return null;

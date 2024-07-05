@@ -28,25 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            archivosSeleccionados = new TextBox();
             botonProteger = new Button();
             Password = new MaskedTextBox();
             label1 = new Label();
             label2 = new Label();
             botonQuitarProteccion = new Button();
             button1 = new Button();
+            ArchivosCargados = new ListBox();
+            menuStrip1 = new MenuStrip();
+            generarTotalesToolStripMenuItem = new ToolStripMenuItem();
+            separarResponsablesToolStripMenuItem = new ToolStripMenuItem();
+            marcarInactividadToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
-            // 
-            // archivosSeleccionados
-            // 
-            archivosSeleccionados.Location = new Point(57, 114);
-            archivosSeleccionados.Name = "archivosSeleccionados";
-            archivosSeleccionados.Size = new Size(554, 27);
-            archivosSeleccionados.TabIndex = 0;
             // 
             // botonProteger
             // 
-            botonProteger.Location = new Point(553, 199);
+            botonProteger.Location = new Point(577, 348);
             botonProteger.Name = "botonProteger";
             botonProteger.Size = new Size(94, 29);
             botonProteger.TabIndex = 1;
@@ -56,7 +54,7 @@
             // 
             // Password
             // 
-            Password.Location = new Point(57, 201);
+            Password.Location = new Point(141, 349);
             Password.Name = "Password";
             Password.Size = new Size(312, 27);
             Password.TabIndex = 3;
@@ -74,7 +72,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(78, 167);
+            label2.Location = new Point(62, 356);
             label2.Name = "label2";
             label2.Size = new Size(73, 20);
             label2.TabIndex = 5;
@@ -82,16 +80,17 @@
             // 
             // botonQuitarProteccion
             // 
-            botonQuitarProteccion.Location = new Point(553, 256);
+            botonQuitarProteccion.Location = new Point(577, 383);
             botonQuitarProteccion.Name = "botonQuitarProteccion";
             botonQuitarProteccion.Size = new Size(145, 29);
             botonQuitarProteccion.TabIndex = 6;
             botonQuitarProteccion.Text = "Quitar Proteccion";
             botonQuitarProteccion.UseVisualStyleBackColor = true;
+            botonQuitarProteccion.Click += botonQuitarProteccion_Click;
             // 
             // button1
             // 
-            button1.Location = new Point(639, 112);
+            button1.Location = new Point(62, 99);
             button1.Name = "button1";
             button1.Size = new Size(94, 29);
             button1.TabIndex = 7;
@@ -99,32 +98,77 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
+            // ArchivosCargados
+            // 
+            ArchivosCargados.FormattingEnabled = true;
+            ArchivosCargados.Location = new Point(62, 134);
+            ArchivosCargados.Name = "ArchivosCargados";
+            ArchivosCargados.Size = new Size(660, 204);
+            ArchivosCargados.TabIndex = 8;
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.ImageScalingSize = new Size(20, 20);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { generarTotalesToolStripMenuItem, separarResponsablesToolStripMenuItem, marcarInactividadToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(800, 28);
+            menuStrip1.TabIndex = 9;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // generarTotalesToolStripMenuItem
+            // 
+            generarTotalesToolStripMenuItem.Name = "generarTotalesToolStripMenuItem";
+            generarTotalesToolStripMenuItem.Size = new Size(126, 24);
+            generarTotalesToolStripMenuItem.Text = "Generar Totales";
+            generarTotalesToolStripMenuItem.Click += generarTotalesToolStripMenuItem_Click;
+            // 
+            // separarResponsablesToolStripMenuItem
+            // 
+            separarResponsablesToolStripMenuItem.Name = "separarResponsablesToolStripMenuItem";
+            separarResponsablesToolStripMenuItem.Size = new Size(168, 24);
+            separarResponsablesToolStripMenuItem.Text = "Separar Responsables";
+            separarResponsablesToolStripMenuItem.Click += separarResponsablesToolStripMenuItem_Click;
+            // 
+            // marcarInactividadToolStripMenuItem
+            // 
+            marcarInactividadToolStripMenuItem.Name = "marcarInactividadToolStripMenuItem";
+            marcarInactividadToolStripMenuItem.Size = new Size(146, 24);
+            marcarInactividadToolStripMenuItem.Text = "Marcar Inactividad";
+            marcarInactividadToolStripMenuItem.Click += marcarInactividadToolStripMenuItem_Click;
+            // 
             // ProtegerArchivos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(ArchivosCargados);
             Controls.Add(button1);
             Controls.Add(botonQuitarProteccion);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(Password);
             Controls.Add(botonProteger);
-            Controls.Add(archivosSeleccionados);
+            Controls.Add(menuStrip1);
             Name = "ProtegerArchivos";
             Text = "ProtegerArchivos";
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private TextBox archivosSeleccionados;
         private Button botonProteger;
         private MaskedTextBox Password;
         private Label label1;
         private Label label2;
         private Button botonQuitarProteccion;
         private Button button1;
+        private ListBox ArchivosCargados;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem generarTotalesToolStripMenuItem;
+        private ToolStripMenuItem separarResponsablesToolStripMenuItem;
+        private ToolStripMenuItem marcarInactividadToolStripMenuItem;
     }
 }

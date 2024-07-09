@@ -78,11 +78,17 @@ namespace NRFM_Auditoria
             string ruta_archivo = archivoNombre.Text;
             int numeroDias;
 
-            if(ruta_archivo == String.Empty)
+            labelProgreso.Visible = true;
+            barraProgresoBajas.Visible = true;
+
+            // valor barra de progreso
+            barraProgresoBajas.Value = barraProgresoBajas.Minimum;
+
+            if (ruta_archivo == String.Empty)
             {
                 MessageBox.Show("No se ha seleccionado un archivo");
             }// si no se ha seleccionado archivo
-            else if(esNumero(limiteUA.Text))
+            else if (esNumero(limiteUA.Text))
             {
                 numeroDias = int.Parse((string)limiteUA.Text);
                 if (numeroDias < 0)
@@ -94,20 +100,23 @@ namespace NRFM_Auditoria
                 {
                     DateTime fechaActualSinHora = DateTime.Today;
 
+                    // valor barra de progreso
+                    barraProgresoBajas.Value = (barraProgresoBajas.Maximum * 2) / 5;
+
                     var archivo = new XLWorkbook(ruta_archivo);
-                    foreach(IXLWorksheet hoja in archivo.Worksheets)
+                    foreach (IXLWorksheet hoja in archivo.Worksheets)
                     {
                         int finCabecera = FuncionesAuditoria.encontrarCabecera(hoja);
-                        if(finCabecera < 0)
+                        if (finCabecera < 0)
                         {
                             MessageBox.Show("No se encontro la cabecera en la hoja " + hoja.Name);
                             continue;
                         }// no se encontro la cabecera
 
-                        char colUltimoAcceso = FuncionesAuditoria.encontrarColUltimoAcceso(hoja,finCabecera);
+                        char colUltimoAcceso = FuncionesAuditoria.encontrarColUltimoAcceso(hoja, finCabecera);
                         if (colUltimoAcceso == '-')
                         {
-                            continue; 
+                            continue;
                         }// No se encontro la columna de ultimo acceso
 
                         //en caso que si la encontrara
@@ -123,7 +132,7 @@ namespace NRFM_Auditoria
 
                         while (!hoja.Cell('A' + index.ToString()).IsEmpty())
                         {
-                            if(!hoja.Cell(colUltimoAcceso + index.ToString()).IsEmpty())
+                            if (!hoja.Cell(colUltimoAcceso + index.ToString()).IsEmpty())
                             {
                                 string valor_fecha = hoja.Cell(colUltimoAcceso + index.ToString()).Value.ToString();
                                 if (esFecha(valor_fecha))
@@ -138,19 +147,31 @@ namespace NRFM_Auditoria
                                     int resultado = DateTime.Compare(fecha, fechaActualSinHora);
                                     if (resultado <= 0)
                                     {
-                                        hoja.Row(index).Style.Fill.BackgroundColor = XLColor.Yellow;
+                                        hoja.Row(index).Style.Fill.BackgroundColor = FuncionesAuditoria.COLOR_CELDAS_BAJA;
                                     }// si la fecha es anterior o igual
                                 }// si se puede convertir a fecha
+                                else if (valor_fecha == String.Empty || valor_fecha.ToLower() == "null")
+                                {
+                                    // obtenemos la columna de fecha de creacion
+                                    char col_Creacion = FuncionesAuditoria.encontrarColFechaCreacion(hoja, finCabecera);
 
+                                    // comprueba si existe la columna fecha de creacion
+
+                                    string calor_fecha_creaicion = hoja.Cell(colUltimoAcceso + index.ToString()).Value.ToString();
+                                }// fin for el es
                             }// si la celda tiene datos
-                            index++; 
+                            index++;
                         }// mientras tenga datos la primera columna
 
                     }// fin for hojas del archivo
 
+                    // valor de barra de progreso
+                    barraProgresoBajas.Value = barraProgresoBajas.Maximum;
+
                     //se han recorrido todas las hojas
                     MessageBox.Show("Proceso terminado");
                     archivo.SaveAs(ruta_archivo);
+
                 }// la cantidad de dias es correcta
             }// el campo contiene un numero
             else
@@ -159,7 +180,15 @@ namespace NRFM_Auditoria
 
 
             }// no se ingreso un numero
+            barraProgresoBajas.Visible = false;
+            labelProgreso.Visible = false;
+        }
 
+        private void protegerArchivosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form Proteger_Archivo = new ProtegerArchivos();
+            Proteger_Archivo.Show();
+            this.Close();
         }
     }
 }

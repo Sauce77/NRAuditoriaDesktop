@@ -13,9 +13,13 @@ namespace NRFM_Auditoria
 {
     public partial class Form2 : Form
     {
+        public string[] CAMPOS_TITULO = ["Total Usuarios", "Total Bajas Automaticas", "Total Bajas Responsable"];
         public string[] CAMPOS_RESPONSABLE = ["Total Usuarios", "Enviado Responsable", "Respuesta Responsable", "Baja Automatica", "Baja Responsable", "Conservar Acceso Responsable"];
 
         public const int FILAS_ENTRE_RESPONSABLES = 1;
+
+        public static XLColor COLOR_MES_PASADO = XLColor.FromTheme(XLThemeColor.Accent1, 0.8);
+        public static XLColor COLOR_MES_ACTUAL = XLColor.FromTheme(XLThemeColor.Accent1, 0.9);
 
         public Form2()
         {
@@ -31,18 +35,54 @@ namespace NRFM_Auditoria
 
         private void cargarArchivo_Click(object sender, EventArgs e)
         {
-            // obtenemos el mes y anio para guardar el documento
-            int mes = DateTime.Now.Month;
-            int anio = DateTime.Now.Year;
-
             string fileActual = FuncionesAuditoria.obtenerArchivoSeleccionado();
             if (fileActual != null)
             {
+                archivoActual.Text = fileActual;
+            }//fin archivo seleccionado
+        }// fin cargar archivo
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void marcarInactividadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form politica_dias = new PoliticaDias();
+            politica_dias.Show();
+            this.Close();
+        }
+
+        private void generarTotales_Click(object sender, EventArgs e)
+        {
+            string fileActual = archivoActual.Text;
+
+            if (FuncionesAuditoria.sePudoAbrirArchivo(fileActual))
+            {
+                labelProgreso.Visible = true;
+                barraProgresoTotales.Visible = true;
+
+                // valor barra de progreso
+                barraProgresoTotales.Value = barraProgresoTotales.Minimum;
+
+                // obtenemos el mes y anio para guardar el documento
+                int mes = DateTime.Now.Month;
+                int anio = DateTime.Now.Year;
+
                 // declaramos un excel para insertar los totales
                 var archivoNuevo = new XLWorkbook();
 
                 // Empezamos a leer el excel actual
                 var libroActual = new XLWorkbook(fileActual);
+
+                // valor barra de progreso
+                barraProgresoTotales.Value = barraProgresoTotales.Maximum / 5;
 
                 //iteramos en cada hoja del libro de excel
                 foreach (IXLWorksheet hoja in libroActual.Worksheets)
@@ -53,7 +93,7 @@ namespace NRFM_Auditoria
                     {
                         continue;
                     }// si no se encuentra cabecera que se omita la hoja
-                    // guardamos el valor como fin de cabecera
+                     // guardamos el valor como fin de cabecera
                     int FIN_CABECERA = index;
 
                     // buscamos en donde se encuentra la columna de responsables
@@ -108,24 +148,44 @@ namespace NRFM_Auditoria
                     // agregamos una hoja para la aplicacion
                     var hojaAplicacion = archivoNuevo.Worksheets.Add(hoja.Name);
 
+                    index = 2;
+
+                    // recorremos todos los titulos de la hoja
+                    foreach (string titulo in CAMPOS_TITULO)
+                    {
+                        hojaAplicacion.Cell("A" + index.ToString()).Value = titulo;
+
+                        hojaAplicacion.Cell("A" + index.ToString()).Style.Font.Bold = true;
+                        hojaAplicacion.Range("A" + index.ToString(), "G" + index.ToString()).Style.Font.FontSize = 14;
+                        hojaAplicacion.Row(index).InsertRowsBelow(1);
+                        index++;
+                    }// fin for campos de titulo de hojas
+
+                    // estilo de los titulos de las columnas
+                    hojaAplicacion.Range("A" + index.ToString(), "D" + index.ToString()).Style.Font.Bold = true;
+                    hojaAplicacion.Range("A" + index.ToString(), "D" + index.ToString()).Style.Font.FontSize = 14;
+                    hojaAplicacion.Range("A" + index.ToString(), "D" + index.ToString()).Style.Font.FontColor = XLColor.White;
+                    hojaAplicacion.Range("A" + index.ToString(), "D" + index.ToString()).Style.Fill.BackgroundColor = XLColor.Black;
+                    hojaAplicacion.Range("A" + index.ToString(), "D" + index.ToString()).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+
                     // anadimos titulos a las columnas
 
                     // titulo Responsables
-                    hojaAplicacion.Cell("A" + (FIN_CABECERA - 1).ToString()).Value = FuncionesAuditoria.NOMBRE_COL_RESPONSABLE;
+                    hojaAplicacion.Cell("A" + index.ToString()).Value = FuncionesAuditoria.NOMBRE_COL_RESPONSABLE;
 
                     // titulo mes pasado
-                    hojaAplicacion.Cell("C" + (FIN_CABECERA - 1).ToString()).Value = ((mes - 1).ToString() + "-" + anio.ToString());
+                    hojaAplicacion.Cell("C" + index.ToString()).Value = ((mes - 1).ToString() + "-" + anio.ToString());
 
                     // titulo mes actual
-                    hojaAplicacion.Cell("D" + (FIN_CABECERA - 1).ToString()).Value = (mes.ToString() + "-" + anio.ToString());
+                    hojaAplicacion.Cell("D" + index.ToString()).Value = (mes.ToString() + "-" + anio.ToString());
 
                     // utilizamos un index para saber en que fila nos encontramos
-                    int fila = FIN_CABECERA;
+                    int fila = index + 1;
+
 
                     // prueba para saber el conteo de cada responsable
                     foreach (KeyValuePair<string, int[]> conteo_responsable in conteo)
                     {
-
                         // escribimos el nombre del responsable
                         hojaAplicacion.Cell("A" + fila.ToString()).Value = conteo_responsable.Key;
 
@@ -139,8 +199,8 @@ namespace NRFM_Auditoria
                             hojaAplicacion.Cell("D" + (fila + i).ToString()).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
                             // estilo columnas numeros
-                            hojaAplicacion.Cell("C" + (fila + i).ToString()).Style.Fill.BackgroundColor = XLColor.FromTheme(XLThemeColor.Accent1, 0.8);
-                            hojaAplicacion.Cell("D" + (fila + i).ToString()).Style.Fill.BackgroundColor = XLColor.FromTheme(XLThemeColor.Accent1, 0.9);
+                            hojaAplicacion.Cell("C" + (fila + i).ToString()).Style.Fill.BackgroundColor = COLOR_MES_PASADO;
+                            hojaAplicacion.Cell("D" + (fila + i).ToString()).Style.Fill.BackgroundColor = COLOR_MES_ACTUAL;
 
                             switch (i)
                             {
@@ -152,38 +212,49 @@ namespace NRFM_Auditoria
                                     break; // total enviados a responsable
                                 case 3:
                                     hojaAplicacion.Cell("D" + (fila + i).ToString()).Value = conteo_responsable.Value[1];
+                                    // calcular bajas automaticas mes actual
+                                    hojaAplicacion.Cell("D3").FormulaA1 += "+D" + (fila + 3).ToString();
+                                    // calcular bajas automaticas mes pasado
+                                    hojaAplicacion.Cell("C3").FormulaA1 += "+C" + (fila + 3).ToString();
+                                    break;
+                                case 4:
+                                    // calcular bajas responsable mes actual
+                                    hojaAplicacion.Cell("D4").FormulaA1 += "+D" + (fila + 4).ToString();
+                                    // calcular bajas responsable mes pasado
+                                    hojaAplicacion.Cell("C4").FormulaA1 += "+C" + (fila + 4).ToString();
                                     break;
                                 case 5:
-                                    hojaAplicacion.Cell("D" + (fila + i).ToString()).Value = conteo_responsable.Value[2];
+                                    hojaAplicacion.Cell("D" + (fila + i).ToString()).FormulaA1 = "=D" + (fila + 1).ToString() + "-D" + (fila + 4).ToString();
+                                    // calcular total usuarios mes actual
+                                    hojaAplicacion.Cell("D2").FormulaA1 += "+D" + (fila + i).ToString();
+                                    // calcular total usuarios mes pasado
+                                    hojaAplicacion.Cell("C2").FormulaA1 += "+C" + (fila + i).ToString();
                                     break;
                             }//fin switch comprobar si insertar cuenta
 
+                            //b
+                            hojaAplicacion.Cell("C2").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            hojaAplicacion.Cell("C3").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            hojaAplicacion.Cell("C4").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            hojaAplicacion.Cell("D2").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            hojaAplicacion.Cell("D3").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                            hojaAplicacion.Cell("D4").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
-                        }//fin campos por responsable
+                            hojaAplicacion.Range("C2", "C4").Style.Fill.BackgroundColor = COLOR_MES_PASADO;
+                            hojaAplicacion.Range("D2", "D4").Style.Fill.BackgroundColor = COLOR_MES_ACTUAL;
+
+                        }//fin campos por responsables
 
                         fila += CAMPOS_RESPONSABLE.Length + FILAS_ENTRE_RESPONSABLES;
                     }//fin foreach diccionario
-
-                    // agregamos el total de usuarios de la aplicacion
-                    hojaAplicacion.Cell("A2").Value = "Total Usuarios";
-                    hojaAplicacion.Cell("B2").Value = total_aplicacion;
-
-                    // estilo del total usuarios
-                    hojaAplicacion.Cell("A2").Style.Font.Bold = true;
-                    hojaAplicacion.Range("A2", "B2").Style.Font.FontSize = 14;
-
-                    // estilo de los titulos de las columnas
-                    hojaAplicacion.Range("A" + (FIN_CABECERA - 1).ToString(), "D" + (FIN_CABECERA - 1).ToString()).Style.Font.Bold = true;
-                    hojaAplicacion.Range("A" + (FIN_CABECERA - 1).ToString(), "D" + (FIN_CABECERA - 1).ToString()).Style.Font.FontSize = 14;
-                    hojaAplicacion.Range("A" + (FIN_CABECERA - 1).ToString(), "D" + (FIN_CABECERA - 1).ToString()).Style.Font.FontColor = XLColor.White;
-                    hojaAplicacion.Range("A" + (FIN_CABECERA - 1).ToString(), "D" + (FIN_CABECERA - 1).ToString()).Style.Fill.BackgroundColor = XLColor.Black;
-                    hojaAplicacion.Range("A" + (FIN_CABECERA - 1).ToString(), "D" + (FIN_CABECERA - 1).ToString()).Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
 
                     // ajustar el ancho de las columnas
                     hojaAplicacion.Columns().AdjustToContents();
 
                 }// fin foreach hojas del libro
 
+                // valor barra de progreso
+                barraProgresoTotales.Value = (4 * barraProgresoTotales.Maximum) / 5;
 
                 // variable para saber si el archivo tiene hojas
                 bool tiene_hojas = false;
@@ -209,6 +280,9 @@ namespace NRFM_Auditoria
 
                     sfd.FileName = nombre_nuevo_archivo;
 
+                    // valor barra de progreso
+                    barraProgresoTotales.Value = barraProgresoTotales.Maximum;
+
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
                         // guardar el nuevo archivo excel
@@ -221,24 +295,22 @@ namespace NRFM_Auditoria
                     MessageBox.Show("No se puede generar el archivo");
                 }// fin no tiene hojas
 
+                barraProgresoTotales.Visible = false;
+                labelProgreso.Visible = false;
 
-            }//fin archivo seleccionado
-        }// fin cargar archivo
+            }// fin si se puede abrir archivo actual
 
-        private void Form2_Load(object sender, EventArgs e)
+        }// fin generar totales
+
+        private void cargarArchivoPasado_Click(object sender, EventArgs e)
         {
 
-        }
+        }// fin cargar archivo pasado
 
-        private void label1_Click(object sender, EventArgs e)
+        private void protegerArchivoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void marcarInactividadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form politica_dias = new PoliticaDias();
-            politica_dias.Show();
+            Form Proteger_Archivo = new ProtegerArchivos();
+            Proteger_Archivo.Show();
             this.Close();
         }
     }

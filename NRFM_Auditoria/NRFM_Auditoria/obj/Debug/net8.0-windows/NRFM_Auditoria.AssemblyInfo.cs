@@ -15,11 +15,17 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 <<<<<<< HEAD
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5c35a9a5efc2eeadc006ddcbf1382a447e2e772")]
 ||||||| 79e25e2
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2d4d8cc83b8a66db6f8a0e28789777b438f515ed")]
 =======
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+28ac0df2823cad062d0993d794f837d13a955eb7")]
+>>>>>>> development
+||||||| a9d17e3
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+28ac0df2823cad062d0993d794f837d13a955eb7")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aff0b974807086e3424cb1f312e78a1931b88436")]
 >>>>>>> development
 [assembly: System.Reflection.AssemblyProductAttribute("NRFM_Auditoria")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NRFM_Auditoria")]
